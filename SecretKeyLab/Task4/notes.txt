@@ -1,0 +1,7 @@
+ECB -> Does not need padding
+
+CBC -> Needs padding
+
+CFB -> Needs padding
+
+OFB -> Needs padding
