@@ -1,9 +1,11 @@
+https://www.youtube.com/watch?v=R3NosHMSi0o
+
 ECB -> Needs padding
 
 CBC -> Needs padding
 
 CFB -> Does not need padding
 https://www.youtube.com/watch?v=ASR8TDIf_6c
-												Don't need to pad as they use bits from prev blocks to create each block
+												Don't need to pad as they use bits from prev blocks to create each block (use iv to create 1st block)
 OFB -> Does not need padding
 https://www.youtube.com/watch?v=GsSJt6NZF9E
