@@ -20,7 +20,6 @@ ciphertext = ciphertextFile.read()
 
 results = open("results.txt", "w")
 
-w = "penis###########"
 for w in words:
 	try:
 		cipher = AES.new(w.encode('utf8'), AES.MODE_CBC, iv)
