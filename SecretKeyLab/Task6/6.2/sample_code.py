@@ -17,6 +17,7 @@ P1_b = bytes(P1, 'utf-8')
 C1_b = bytearray.fromhex(C1)
 C2_b = bytearray.fromhex(C2)
 
+# C1 = P1 XOR key --> key = P1 XOR C1 because CFB
 key = xor(P1_b, C1_b)
 P2_b = xor(C2_b, key)
 
