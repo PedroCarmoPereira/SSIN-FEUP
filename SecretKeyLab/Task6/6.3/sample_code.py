@@ -43,21 +43,21 @@ i = start
 while (True):
 
     if(i > end):
+        print("cheguei ao fim")
         break
     
     os.system("echo -n \"" + str(n1_final) + "\" | xxd -r -p > P2")
     
-    command = "openssl enc -aes-128-cbc -e -in P2 -out C2.bin -K " + format(i, 'x') + " -iv " + str(IV_next)
+    command = "openssl enc -aes-128-cbc -e -in P2 -out C2.bin -K " + format(i, '032x') + " -iv " + str(IV_next)
     
     os.system(command)
 
     getOutput = subprocess.check_output("xxd -p C2.bin", shell=True).decode()
-    
-    print("------")
-    print(bob_cypher)
-    print(getOutput)
-    
+
     if(bob_cypher == getOutput):
+    	print("------")
+    	print(bob_cypher)
+    	print(getOutput)
     	break
 
     i = i + 1
