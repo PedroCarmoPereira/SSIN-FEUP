@@ -1,6 +1,8 @@
 #!/usr/bin/python3
-from Crypto.Cipher import AES
-from Crypto.Util.Padding import pad
+#from Crypto.Cipher import AES
+#from Crypto.Util.Padding import pad
+import os
+import subprocess
 
 # XOR two bytearrays
 def xor(first, second):
@@ -29,14 +31,10 @@ n1 = xor(P1_guess_bytearray, IV_bob_bytearray)
 n2 = xor(P2_guess_bytearray, IV_bob_bytearray)
 
 n1_final_binary = xor(n1, IV_next_bytearray)
-print(n1_final_binary)
 n1_final = ''.join('{:02x}'.format(x) for x in n1_final_binary)
-print(n1_final)
 
 n2_final_binary = xor(n2, IV_next_bytearray)
-print(n2_final_binary)
 n2_final = ''.join('{:02x}'.format(x) for x in n2_final_binary)
-print(n2_final)
 
 start = 0x00000000000000000000000000000000
 end = 0xffffffffffffffffffffffffffffffff
@@ -46,58 +44,20 @@ while (True):
 
     if(i > end):
         break
+    
+    os.system("echo -n \"" + str(n1_final) + "\" | xxd -r -p > P2")
+    
+    command = "openssl enc -aes-128-cbc -e -in P2 -out C2.bin -K " + format(i, 'x') + " -iv " + str(IV_next)
+    
+    os.system(command)
 
-    i_hex = hex(i)
-
-    print(i_hex)
-
-    cipher = AES.new(i.encode('utf8'), AES.MODE_CBC, IV_next_bytearray)
-
-    ciphertext = cipher.encrypt(pad(n1_final, AES.block_size))
-
-    # ni_final com ciphertext
-    print("--------")
+    getOutput = subprocess.check_output("xxd -p C2.bin", shell=True).decode()
+    
+    print("------")
     print(bob_cypher)
-    print(ciphertext)
+    print(getOutput)
+    
+    if(bob_cypher == getOutput):
+    	break
 
     i = i + 1
-
-
-# f = open("words.txt", "r")
-
-# words = []
-# for x in f:
-# 	words.append(x.strip())
-
-# index = random.randint(0, len(words))
-# key = words[index]
-
-# while len(key) < 16:
-# 	key += "#"
-
-# plaintextFile = open("plaintext.txt", "rb")
-# plaintext = plaintextFile.read()
-
-# ivFile = open("iv.txt", "r")
-# iv = bytearray.fromhex(ivFile.read())
-
-# cipher = AES.new(key.encode('utf8'), AES.MODE_CBC, iv)
-# encryptedFile = open("encrypted.bin", "wb")
-
-# ciphertext = cipher.encrypt(pad(plaintext, AES.block_size))
-# encryptedFile.write(ciphertext)
-
-# # Convert ascii string to bytearray
-# P1_b = bytes(P1, 'utf-8')
-
-# # Convert hex string to bytearray
-# C1_b = bytearray.fromhex(C1)
-# C2_b = bytearray.fromhex(C2)
-
-# # C1 = P1 XOR key --> key = P1 XOR C1 because OFB
-# key = xor(P1_b, C1_b)
-# P2_b = xor(C2_b, key)
-
-# P2 = P2_b.decode()
-
-# print(P2)
