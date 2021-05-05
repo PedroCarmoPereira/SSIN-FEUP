@@ -1,0 +1,1 @@
+Countermeasure is the usage of the query() PHP function that only allows for the submission of one SQL statement.
