@@ -1,0 +1,7 @@
+O dominio seed-server.com já está registado, mas na VM o /etc/hosts usa o www.SeedLabSQLInjection.com
+contudo, a config do apache não tava a apontar para lá mas para o seed-server.com. Já mudei para ser no site que funciona:
+www.SeedLabSQLInjection.com
+
+Para entrar no container de MySQL (dps do dcup):
+
+	docksh mysql-10.9.0.6
