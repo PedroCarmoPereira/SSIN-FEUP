@@ -1,0 +1,29 @@
+Task 6.3
+
+O que o programa servidor (oráculo) faz é (CBC):
+
+Entrada:
+
+      P = ‘Yes’ + padding  =  5965730d0d0d0d0d0d0d0d0d0d0d0d0d       (13 bytes de padding) ou      
+
+      P = ‘No’ + padding   = 4e6f0e0e0e0e0e0e0e0e0e0e0e0e0e0e          (14 bytes de padding)
+
+Saída:
+
+C(1º bloco) = Ek(P xor IV1)    conhece-se IV2 (o IV da próxima encriptação)
+
+Para reproduzir o mesmo resultado dever-se-ia calcular:
+
+Entrada:
+
+         P’ = (‘Yes’ + padding) xor IV1 xor IV2        ou
+
+        P’ = (‘No’ + padding) xor IV1 xor IV2
+
+Fornecendo P’ ao oráculo a saída deverá ser:
+
+C’(1º bloco) = Ek(P’ xor IV2)             (este xor feito pelo oráculo é eliminado pelo … xor IV2 de P’)
+
+Assim a operação efetuada é a mesma que a primeira …
+
+Logo C’ = C se se usou o mesmo ‘Yes’ ou ‘No’
