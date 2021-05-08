@@ -1,15 +1,16 @@
-const http = require('http');
+'use strict';
 
-const server = http.createServer((req, res) => {
-	if (req.url === '/'){
-		res.write("A route and a page");
-		res.end();
-	}
-	else if (req.url === '/hello'){
-		res.write("<h1>Hello, World!</h1>");
-		res.end();
-	}
+const express = require('express');
+
+// Constants
+const PORT = 4500;
+const HOST = 'localhost';
+
+// App
+const app = express();
+app.get('/', (req, res) => {
+  res.send('Hello World');
 });
 
-server.listen(4500);
-console.log('Listening on 4500');
+app.listen(PORT, HOST);
+console.log(`Running on http://${HOST}:${PORT}`);
