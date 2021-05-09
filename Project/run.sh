@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker run -p 49160:4500 -d ssin/node-web-app
