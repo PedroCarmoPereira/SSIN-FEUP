@@ -1,6 +1,7 @@
 "use strict";
 
-const db = require("./src/db/database.js");
+const md5 = require("md5");
+const db = require("./database.js");
 
 function populate(){
 db.run(`CREATE TABLE user (
@@ -23,3 +24,4 @@ db.run(`CREATE TABLE user (
 }
 
 populate();
+console.log("AAAAAAAA");

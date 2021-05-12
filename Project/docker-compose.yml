@@ -1,0 +1,6 @@
+version: "3"
+services:
+  server:
+    image: ssin/node-web-app
+    ports:
+      - 49160:49160

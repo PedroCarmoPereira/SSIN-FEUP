@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-docker rmi ssin/node-web-app
+echo y | docker system prune
 docker build . --tag ssin/node-web-app
