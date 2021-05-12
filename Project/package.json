@@ -4,7 +4,8 @@
   "description": "Portal para o Ministério dos Negócios Estrangeiros de Portugal",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "populate": "docker exec ssin node ./src/db/populate.js"
   },
   "dependencies": {
     "express": "^4.17.1",

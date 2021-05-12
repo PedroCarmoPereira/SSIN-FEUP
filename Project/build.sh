@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
-
-docker build . -t ssin/node-web-app
+docker rmi ssin/node-web-app
+docker build . --tag ssin/node-web-app
