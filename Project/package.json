@@ -8,8 +8,10 @@
     "populate": "docker exec project_server_1 node ./src/db/populate.js"
   },
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "express": "^4.17.1",
     "md5": "^2.3.0",
+    "randexp": "^0.5.3",
     "sqlite3": "^5.0.2"
   }
 }
