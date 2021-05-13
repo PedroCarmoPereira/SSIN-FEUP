@@ -1,6 +1,0 @@
-version: "3"
-services:
-  server:
-    image: ssin/node-web-app
-    ports:
-      - 8010:8010
