@@ -1,4 +1,4 @@
-To Compile run:
+To compile:
 
 > ./scripts/build.sh
 
@@ -8,4 +8,4 @@ To run:
 
 To populate Db: (After above steps)
 
-> npm run populate
+> ./scripts/populate.sh

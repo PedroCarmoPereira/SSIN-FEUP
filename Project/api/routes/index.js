@@ -1,10 +1,10 @@
 module.exports = (app) => {
 
-    app.get('/', function (req, res) {
+    app.get('/', (_, res, __) => {
         res.redirect('/api');
     });
 
-    app.get('/api', (req, res) => {
+    app.get('/api', (_, res, __) => {
         res.status(200).send({
             message: 'Portal_MNE_PT API',
         });
