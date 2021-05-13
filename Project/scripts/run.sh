@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-docker run --name=ssin -p 49160:49160 ssin/node-web-app
+docker run --name=ssin -p 8010:8010 ssin/node-web-app
