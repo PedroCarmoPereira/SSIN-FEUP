@@ -1,5 +1,5 @@
 const db = require("../db/database.js");
-const bcrypt = require("bcryptjs");
+//const bcrypt = require("bcryptjs");
 //const SALT_LEN = 10;
 
 module.exports = (app) => {
@@ -12,14 +12,18 @@ module.exports = (app) => {
         else {
 			
 			const username = req.query.username;
-			/*let saltQ = 'SELECT salt FROM user WHERE user.username = \'AdminAcc\'';
-			let stmt = db.prepare('SELECT salt FROM user WHERE username = \'AdminAcc\'');
+			let salt;
+			let saltQ = 'SELECT * FROM user WHERE username = ?';
+			db.get(saltQ, [username], (err, rows) => {
+				console.log(rows);
+				//salt = rows.salt;
+			});
+			/*let stmt = db.prepare('SELECT salt FROM user WHERE username = \'AdminAcc\'');
 			let salt = db.run('SELECT salt FROM user WHERE user.username = \'AdminAcc\'');
 			/*db.all(saltQ, [], (err, row) => {
 				if (err) throw err;
 				salt += row[0].salt;
 			});*/
-			console.log(username);
 			/*
 			let check = 'SELECT username FROM user WHERE username = ? AND password = ?';
 			let stmt = db.prepare(check);
