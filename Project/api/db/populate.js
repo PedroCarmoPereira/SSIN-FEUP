@@ -33,12 +33,6 @@ function populate() {
 	}
 
 	try {
-		db.exec('DROP TABLE IF EXISTS delivery');
-	} catch {
-		console.log('Error dropping delivery');
-	} 
-
-	try {
 		db.exec('DROP TABLE IF EXISTS appointment');
 	} catch {
 		console.log('Error dropping appointment');
@@ -54,6 +48,18 @@ function populate() {
 		db.exec('DROP TABLE IF EXISTS message');
 	} catch {
 		console.log('Error dropping message');
+	}
+
+	try {
+		db.exec('DROP TABLE IF EXISTS delivery');
+	} catch {
+		console.log('Error dropping delivery');
+	} 
+
+	try {
+		db.exec('DROP TABLE IF EXISTS token');
+	} catch {
+		console.log('Error dropping token');
 	} 
 
 	db.run(`CREATE TABLE user (
@@ -159,6 +165,13 @@ function populate() {
 		content TEXT,
 		op_date date,
 		FOREIGN KEY(employee_id) REFERENCES user(id)
+	  )`
+	);
+
+	db.run(`CREATE TABLE token(
+		token INTEGER PRIMARY KEY,
+		user_id INTEGER NOT NULL,
+		FOREIGN KEY(user_id) REFERENCES user(id)
 	  )`
 	);
 }
