@@ -68,6 +68,7 @@ function populate() {
 		username varchar(8) UNIQUE, 
 		email text UNIQUE, 
 		password text,
+		salt text,
 		access_lvl INTEGER,
 		CONSTRAINT email_unique UNIQUE (email)
 		)`,
@@ -77,31 +78,54 @@ function populate() {
 			 }
 			else {
 				// Table just created, creating some rows
-				let insert = 'INSERT INTO user (name, email, username, password, access_lvl) VALUES (?,?,?, ?,?)';
+				let insert = 'INSERT INTO user (name, email, username, password, salt, access_lvl) VALUES (?,?,?,?,?,?)';
 				let stmt = db.prepare(insert);
-				stmt.run(["Admin Account", "admin@example.com", "AdminAcc", bcrypt.hashSync("Admin1234567", SALT_LEN), 3])
-				stmt.run(["Zé Ninguém", "jose_ningue@example.com", "Zenin123", bcrypt.hashSync("Zenin1234567", SALT_LEN), 0]);
-				stmt.run(["José Centro", "jose_intermed@example.com", "Zemid123", bcrypt.hashSync("Zemid1234567", SALT_LEN), 1]);
-				stmt.run(["Zezão Reizão", "jose_reis@example.com", "Zegran123", bcrypt.hashSync("Zegran1234567", SALT_LEN), 2]);
-				stmt.run(["João Silva", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Joana Silva", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Pedro Silva", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Fábio Almeida", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Jeremias Dentro-da-Lei", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Generoso Primo", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Sérgio Portugal", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Alexandra Magnanima", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Mariana Ferreira", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Ada Cordão-Amor", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Carlos Babette", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Pedro Atleta", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 0]);
-				stmt.run(["Fernando Tola", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 1]);
-				stmt.run(["Cátia Vanessa", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 1]);
-				stmt.run(["Vanessa Cátia", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 1]);
-				stmt.run(["Silvestre Joanino", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 1]);
-				stmt.run(["Dra. Beatriz Aranha", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), SALT_LEN), 2]);
-				stmt.run(["Coronel Mostarda", generateEmail(), generateUname(), bcrypt.hashSync("SGketchup755", SALT_LEN), 3]);
-				stmt.run(["Tiago Ligação", generateEmail(), generateUname(), bcrypt.hashSync("AgitNMix4666", SALT_LEN), 3]);
+				let salt = bcrypt.genSaltSync(10);
+				stmt.run(["Admin Account", "admin@example.com", "AdminAcc", bcrypt.hashSync("Admin1234567", salt), salt, 3])
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Zé Ninguém", "jose_ningue@example.com", "Zenin123", bcrypt.hashSync("Zenin1234567", salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["José Centro", "jose_intermed@example.com", "Zemid123", bcrypt.hashSync("Zemid1234567", salt), salt, 1]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Zezão Reizão", "jose_reis@example.com", "Zegran123", bcrypt.hashSync("Zegran1234567", salt), salt, 2]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["João Silva", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Joana Silva", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Pedro Silva", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Fábio Almeida", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Jeremias Dentro-da-Lei", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Generoso Primo", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Sérgio Portugal", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Alexandra Magnanima", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Mariana Ferreira", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Ada Cordão-Amor", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Carlos Babette", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Pedro Atleta", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 0]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Fernando Tola", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 1]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Cátia Vanessa", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 1]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Vanessa Cátia", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 1]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Silvestre Joanino", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 1]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Dra. Beatriz Aranha", generateEmail(), generateUname(), bcrypt.hashSync(generateId(), salt), salt, 2]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Coronel Mostarda", generateEmail(), generateUname(), bcrypt.hashSync("SGketchup755", salt), salt, 3]);
+				salt = bcrypt.genSaltSync(10);
+				stmt.run(["Tiago Ligação", generateEmail(), generateUname(), bcrypt.hashSync("AgitNMix4666", salt), salt, 3]);
 			}
 		});
 

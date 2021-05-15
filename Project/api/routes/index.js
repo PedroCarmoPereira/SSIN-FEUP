@@ -9,21 +9,8 @@ module.exports = (app) => {
             message: 'Portal_MNE_PT API',
         });
     });
-
-    app.get('/auth', (req, res) => {
-        if (req.query.username === undefined || req.query.password === undefined){
-            res.status(403).send({
-                message:'Must set username and password fields',
-            });
-        }
-
-        else {
-            res.status(200).send({
-                message: 'Auth',
-            });
-     }
-    })
-
+    
+    require('./auth.js')(app);
     require('./user.js')(app);
     require('./story.js')(app);
 };
