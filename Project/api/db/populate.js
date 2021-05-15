@@ -20,6 +20,42 @@ function generateEmail() {
 }
 
 function populate() {
+	try {
+		db.exec('DROP TABLE IF EXISTS user');
+	} catch {
+		console.log('Error dropping users');
+	}
+
+	try {
+		db.exec('DROP TABLE IF EXISTS story');
+	} catch {
+		console.log('Error dropping stories');
+	}
+
+	try {
+		db.exec('DROP TABLE IF EXISTS delivery');
+	} catch {
+		console.log('Error dropping delivery');
+	} 
+
+	try {
+		db.exec('DROP TABLE IF EXISTS appointment');
+	} catch {
+		console.log('Error dropping appointment');
+	} 
+
+	try {
+		db.exec('DROP TABLE IF EXISTS visa_request');
+	} catch {
+		console.log('Error dropping visa_request');
+	} 
+
+	try {
+		db.exec('DROP TABLE IF EXISTS message');
+	} catch {
+		console.log('Error dropping message');
+	} 
+
 	db.run(`CREATE TABLE user (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name text,
@@ -30,7 +66,9 @@ function populate() {
 		CONSTRAINT email_unique UNIQUE (email)
 		)`,
 		(err) => {
-			if (err) { }
+			if (err) {
+				console.log('Error creating user table');
+			 }
 			else {
 				// Table just created, creating some rows
 				let insert = 'INSERT INTO user (name, email, username, password, access_lvl) VALUES (?,?,?, ?,?)';
@@ -72,7 +110,7 @@ function populate() {
 			if (err) {
 				if (err.errno !== 1) throw err;
 			}
-
+			db.run('DELETE FROM story');
 			let insert = 'INSERT INTO story (title, article, author_id) VALUES (?,?,?)';
 			let stmt = db.prepare(insert);
 			stmt.run('How it all began...', 'Some dude named Afonso decided Spain was shit...', 19);
