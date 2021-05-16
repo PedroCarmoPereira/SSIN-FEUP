@@ -1,6 +1,5 @@
 const db = require("../db/database.js");
-//const bcrypt = require("bcryptjs");
-//const SALT_LEN = 10;
+const bcrypt = require("bcryptjs");
 
 module.exports = (app) => {
 	app.get('/register', (req, res) => {
@@ -10,32 +9,29 @@ module.exports = (app) => {
             });
         }
         else {
-			
 			const username = req.query.username;
-			let salt;
-			let saltQ = 'SELECT * FROM user WHERE username = ?';
-			db.get(saltQ, [username], (err, rows) => {
-				console.log(rows);
-				//salt = rows.salt;
+			const password = req.query.password;
+			let check = 'SELECT * FROM user WHERE username = ?';
+			db.get(check, [username], (err, row) => {
+				if (err) {
+					res.status(400).json({ "error": err.message });
+					return;
+				}
+				if (!row) {
+					res.status(404).json({ "error": "Invalid Credentials" });
+					return;
+				}
+				let test = bcrypt.compareSync(password, row.password);
+				if (test){
+					res.status(200).send({
+						message: 'Auth',
+					});
+				}
+				else {
+					res.status(404).json({ "error": "Invalid Credentials" });
+					return;
+				}
 			});
-			/*let stmt = db.prepare('SELECT salt FROM user WHERE username = \'AdminAcc\'');
-			let salt = db.run('SELECT salt FROM user WHERE user.username = \'AdminAcc\'');
-			/*db.all(saltQ, [], (err, row) => {
-				if (err) throw err;
-				salt += row[0].salt;
-			});*/
-			/*
-			let check = 'SELECT username FROM user WHERE username = ? AND password = ?';
-			let stmt = db.prepare(check);
-			let password = bcrypt.hashSync("Admin1234567", salt);
-			let test = stmt.get([req.username, password], (err, row) => {
-				if(err) throw err;
-				console.log("ROW:");
-				console.log(row);
-			});*/
-            res.status(200).send({
-                message: 'Auth',
-            });
      }
     });
 };
