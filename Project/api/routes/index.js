@@ -9,7 +9,8 @@ module.exports = (app) => {
             message: 'Portal_MNE_PT API',
         });
     });
-
+    
+    require('./auth.js')(app);
     require('./user.js')(app);
     require('./story.js')(app);
 };

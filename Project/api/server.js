@@ -9,6 +9,8 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
 
 require('./routes')(app);
 
