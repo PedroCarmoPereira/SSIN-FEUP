@@ -5,9 +5,6 @@ const express = require('express');
 //To test:
 //curl -X POST -H "Content-Type: application/json" -d '{"username":"Zegran123", "password":"Zegran1234567"}' http://localhost:8010/api/register
 module.exports = (app) => {
-	app.use(express.json());
-    app.use(express.urlencoded({ extended: false }));
-
 	app.post('/api/register', (req, res) => {
         if (req.body.username === undefined || req.body.password === undefined){
             res.status(403).send({
