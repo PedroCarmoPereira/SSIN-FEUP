@@ -3,9 +3,6 @@ const express = require('express');
 
 
 module.exports = (app) => {
-    app.use(express.json());
-    app.use(express.urlencoded({ extended: false }));
-
     app.get("/api/stories", (_, res, __) => {
         var sql = "select * from story"
         var params = []
