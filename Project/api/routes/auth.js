@@ -1,6 +1,5 @@
 const db = require("../db/database.js");
 const bcrypt = require("bcryptjs");
-const express = require('express');
 
 //To test:
 //curl -X POST -H "Content-Type: application/json" -d '{"username":"Zegran123", "password":"Zegran1234567"}' http://localhost:8010/api/register
