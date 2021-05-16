@@ -1,6 +1,6 @@
 import React from 'react';
-import WelcomeScreen from './app/screens/WelcomeScreen';
+import Navigator from './app/routes/homeStack';
 
 export default function App() {
-  return <WelcomeScreen />;
+  return <Navigator />;
 }
