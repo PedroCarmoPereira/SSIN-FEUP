@@ -56,12 +56,6 @@ function populate() {
 		console.log('Error dropping delivery');
 	} 
 
-	try {
-		db.exec('DROP TABLE IF EXISTS token');
-	} catch {
-		console.log('Error dropping token');
-	} 
-
 	db.run(`CREATE TABLE user (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name text,
