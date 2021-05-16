@@ -22,9 +22,27 @@ module.exports = (app) => {
 					return;
 				}
 				let test = bcrypt.compareSync(password, row.password);
+				const user_id = row.id;
 				if (test){
-					res.status(200).send({
-						message: 'Auth',
+					let checkForRegister = 'SELECT * FROM token WHERE user_id = ?';
+					db.get(checkForRegister, user_id, (err, row) => {
+						if (err) {
+							res.status(400).json({ "error": err.message });
+							return;
+						}
+
+						if(row) {
+							res.status(403).json({ "error": "Account already registered"});
+							return;
+						}
+						const token = bcrypt.hashSync(username, 10);
+						let insert = 'INSERT INTO token (token, user_id) VALUES (?, ?)';
+						let stmt = db.prepare(insert);
+						stmt.run(token, user_id);
+						res.status(200).send({
+							message: 'Successfully Registered',
+							token: token
+						});
 					});
 				}
 				else {

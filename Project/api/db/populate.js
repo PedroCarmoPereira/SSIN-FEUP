@@ -169,7 +169,8 @@ function populate() {
 	);
 
 	db.run(`CREATE TABLE token(
-		token INTEGER PRIMARY KEY,
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		token text,
 		user_id INTEGER NOT NULL,
 		FOREIGN KEY(user_id) REFERENCES user(id)
 	  )`
