@@ -170,7 +170,7 @@ function populate() {
 
 	db.run(`CREATE TABLE token(
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		token text,
+		token text UNIQUE,
 		user_id INTEGER NOT NULL,
 		FOREIGN KEY(user_id) REFERENCES user(id)
 	  )`
