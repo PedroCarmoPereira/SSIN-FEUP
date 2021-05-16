@@ -1,6 +1,4 @@
 const db = require("../db/database.js");
-const express = require('express');
-
 
 module.exports = (app) => {
     app.get("/api/stories", (_, res, __) => {
