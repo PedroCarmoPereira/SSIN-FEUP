@@ -48,4 +48,32 @@ module.exports = (app) => {
         });
         
     });
+
+    //To Test
+    //curl -X POST -H "Content-Type: application/json" -d '{"title": "linuxize@example.com"}' http://localhost:8010/api/stories/remove
+    app.post("/api/stories/remove", (req, res, _) => {
+        if (req.body.title === undefined){
+            res.status(400).json({
+                "message": "Missing Parameters",
+            });
+            return;
+        }
+        //console.log(req.body);
+        let del = 'DELETE FROM story WHERE story.title = ?';
+        let stmt = db.prepare(del);
+        stmt.run(req.body.title, (err) => {
+            if (err){
+                console.log(err);
+                res.status(400).json({
+                "message": "Unable to remove story",
+                });
+                return;
+            }
+            
+            res.status(200).json({
+                "message": "Story successfully removed",
+            });
+        });
+        
+    });
 };
