@@ -68,6 +68,7 @@ function populate() {
 		username varchar(8) UNIQUE, 
 		email text UNIQUE, 
 		password text,
+		token text,
 		access_lvl INTEGER,
 		CONSTRAINT email_unique UNIQUE (email)
 		)`,
@@ -165,14 +166,6 @@ function populate() {
 		content TEXT,
 		op_date date,
 		FOREIGN KEY(employee_id) REFERENCES user(id)
-	  )`
-	);
-
-	db.run(`CREATE TABLE token(
-		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		token text UNIQUE,
-		user_id INTEGER NOT NULL,
-		FOREIGN KEY(user_id) REFERENCES user(id)
 	  )`
 	);
 }
