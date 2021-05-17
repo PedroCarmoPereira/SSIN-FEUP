@@ -5,8 +5,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 function Header({navigation}) {
     
     const pressHandler = () => {
-        // navigation.openDrawer();
-        console.log('Drawer Menu Icon Pressed')
+        navigation.openDrawer();
     }
 
     return (

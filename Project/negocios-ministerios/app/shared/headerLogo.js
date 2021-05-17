@@ -4,7 +4,7 @@ import { View, Platform, Image, Button, ImageBackground, TouchableOpacity, Style
 function HeaderLogo({navigation}) {
     
     const pressHandler = () => {
-        navigation.navigate('LandingScreen');
+        navigation.navigate('Home');
     }
 
     return (

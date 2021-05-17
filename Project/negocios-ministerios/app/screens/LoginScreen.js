@@ -6,7 +6,7 @@ import globalStyles from '../styles/globalStyles';
 function LoginScreen({navigation}) {
     
     const pressHandler = () => {
-        navigation.navigate('LandingScreen');
+        navigation.navigate('Home');
     }
 
     return (
