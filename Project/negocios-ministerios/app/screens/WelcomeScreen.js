@@ -5,7 +5,7 @@ import globalStyles from '../styles/globalStyles';
 function WelcomeScreen({navigation}) {
 
     const pressHandler = () => {
-        navigation.push('LoginScreen');
+        navigation.navigate('LoginScreen');
     }
 
     return (
