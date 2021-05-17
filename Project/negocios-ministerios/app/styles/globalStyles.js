@@ -24,7 +24,10 @@ const globalStyles = StyleSheet.create({
         borderRadius: 5,
         width: 200
     },
-
+    TitleText:{
+      fontSize: 36,
+      //fontFamily: 'DM Serif Display'
+    }
     
   });
 

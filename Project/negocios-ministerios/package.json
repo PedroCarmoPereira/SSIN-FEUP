@@ -9,8 +9,10 @@
   },
   "dependencies": {
     "@expo/ngrok": "^2.4.3",
+    "@react-native-community/cli": "^5.0.1-alpha.2",
     "@react-native-community/hooks": "^2.6.0",
     "@react-native-community/masked-view": "^0.1.10",
+    "@react-native-community/picker": "^1.8.1",
     "@react-navigation/drawer": "^5.12.5",
     "@react-navigation/native": "^5.9.4",
     "@react-navigation/stack": "^5.14.5",
