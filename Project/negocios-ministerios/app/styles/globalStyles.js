@@ -24,6 +24,8 @@ const globalStyles = StyleSheet.create({
         borderRadius: 5,
         width: 200
     },
+
+    
   });
 
 export default globalStyles;
