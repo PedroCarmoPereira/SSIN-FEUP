@@ -5,48 +5,21 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
-import ChatSearch from '../screens/ChatSearch';
-import LandingScreen from '../screens/LandingScreen';
-import Header from '../shared/header';
-import HeaderLogo from '../shared/headerLogo';
+import {LandingScreenPage, ChatSearchPage} from './Pages';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
-const Pages = ({navigation}) => {
-  return (
-    <Stack.Navigator mode="modal">
-        <Stack.Screen
-            name="LandingScreen"
-            component={LandingScreen}
-            options={headerComponent}
-        />
-        <Stack.Screen
-            name="ChatSearch"
-            component={ChatSearch}
-            options={headerComponent}
-        />
-      </Stack.Navigator>
-  );
-};
-
-const headerComponent = ({navigation}) => { 
-  return {
-    headerTitle: () => (<Header navigation={navigation}/>),
-    headerLeft: () => (<HeaderLogo navigation={navigation} />),
-  }
-}
 
 const Home = ({navigation}) => {
     return (
       <Drawer.Navigator drawerPosition='right'>
         <Drawer.Screen
           name="Home"
-          component={Pages}
+          component={LandingScreenPage}
         />
         <Drawer.Screen
           name="ChatSearch"
-          component={Pages}
+          component={ChatSearchPage}
         />
       </Drawer.Navigator>
     );
