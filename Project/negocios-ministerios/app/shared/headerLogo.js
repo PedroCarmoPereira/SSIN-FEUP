@@ -19,8 +19,11 @@ function HeaderLogo({navigation}) {
 
 const styles = StyleSheet.create({
     LogoPortugal: {
+        paddingTop: '10px',
         alignItems: 'center',
         justifyContent: 'center',
+        width: '69px',
+        height: '84px'
     },
 });
 
