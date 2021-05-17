@@ -16,7 +16,14 @@ const globalStyles = StyleSheet.create({
     },
     getStartedButton: {
         borderRadius: 20,
-    }
+    },
+    TextInput: {
+        marginTop: 5,
+        backgroundColor: "white",
+        borderWidth: 1,
+        borderRadius: 5,
+        width: 200
+    },
   });
 
 export default globalStyles;

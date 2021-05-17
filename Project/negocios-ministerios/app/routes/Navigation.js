@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LandingScreen from '../screens/LandingScreen';
+import Header from '../shared/header';
 
 const Stack = createStackNavigator();
 const Routes = () => {
@@ -24,6 +25,12 @@ const Routes = () => {
         <Stack.Screen
             name="LandingScreen"
             component={LandingScreen}
+            options={({navigation}) => { 
+                return {
+                  headerTitle: () => <Header navigation={navigation} />
+                }
+              }
+            }
         />
       </Stack.Navigator>
     </NavigationContainer>
