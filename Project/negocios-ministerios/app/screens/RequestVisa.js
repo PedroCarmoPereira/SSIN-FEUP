@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
-import { Text, View, Picker, StyleSheet } from 'react-native';
+import { Text, View, Picker, StyleSheet ,Button} from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import globalStyles from '../styles/globalStyles';
+import CalendarPicker from 'react-native-calendar-picker';
 
 const UselessTextInput = (props) => {
     return (
-      <TextInput
-        {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
-        editable
-        maxLength={40}
-      />
+        <TextInput
+            {...props} // Inherit any props passed to it; e.g., multiline, numberOfLines below
+            editable
+            maxLength={40}
+        />
     );
-  }
+}
 
 function RequestVisa(props) {
     const [value, onChangeText] = React.useState('Useless Multiline Placeholder');
@@ -43,6 +44,15 @@ function RequestVisa(props) {
             </View>
 
             <Text > Date* </Text>
+            <View >
+                <CalendarPicker
+                />
+                <Button
+                title='Marcar'
+                color="red"
+                style={globalStyles.getStartedButton}
+            />
+            </View>
         </View>
 
     );
@@ -53,7 +63,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 20,
         borderWidth: 2,
-        height: "100%",
+        height: "90%",
         padding: 10
     },
     picker: {
