@@ -1,5 +1,7 @@
 const db = require("../db/database.js");
 
+//TO TEST:
+//curl -X POST -H "Content-Type: application/json" -d '{"requester_id":"1", "motive":"Test", "set_date":"2021-01-20 20:20:20"}' http://localhost:8010/api/appointment
 module.exports = (app) => {
     app.get("/api/appointment", (_, res, __) => {
         var sql = "select * from appointment"
@@ -17,7 +19,7 @@ module.exports = (app) => {
     });
 
 	app.post('/api/appointment', (req, res) => {
-        if (req.body.requester_id === undefined || req.body.motive === undefined || req.body.set_date === undefined){
+        if (req.body.token === undefined || req.body.requester_id === undefined || req.body.motive === undefined || req.body.set_date === undefined){
             res.status(403).send({
                 message:'Must set all request fields',
             });
