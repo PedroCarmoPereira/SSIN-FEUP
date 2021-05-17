@@ -36,6 +36,7 @@ const styles = StyleSheet.create({
         resizeMode: 'repeat'
     },
     Icon: {
+        top:'-5%',
         right: 0
     }
 });
