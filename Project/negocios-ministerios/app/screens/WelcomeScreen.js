@@ -1,22 +1,27 @@
 import React from 'react';
-import { View, Platform, Image, Button } from 'react-native';
+import { View, Platform, Image, Button, ImageBackground } from 'react-native';
 import globalStyles from '../styles/globalStyles';
 
 function WelcomeScreen({navigation}) {
 
     const pressHandler = () => {
-        navigation.push('LandingScreen');
+        navigation.push('LoginScreen');
     }
 
     return (
-        <View style={globalStyles.container}>
+        <ImageBackground source={require('../assets/Background.png')} style={globalStyles.container}>
             <Image
                 fadeDuration = {1000}
                 style={globalStyles.welcomeLogo}
                 source={require("../assets/extended_icon.png")}
             />
-            <Button title='Get Started' onPress={pressHandler} />
-        </View>
+            <Button
+                title='Get Started'
+                onPress={pressHandler}
+                color="red"
+                style={globalStyles.getStartedButton}
+            />
+        </ImageBackground>
     );
 }
 

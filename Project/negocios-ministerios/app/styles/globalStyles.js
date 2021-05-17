@@ -10,11 +10,12 @@ const globalStyles = StyleSheet.create({
       paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
     },
     welcomeLogo: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      width: 255,
-      height: 133,
-      resizeMode: 'stretch',
+        width: 255,
+        height: 133,
+        resizeMode: 'stretch',
+    },
+    getStartedButton: {
+        borderRadius: 20,
     }
   });
 
