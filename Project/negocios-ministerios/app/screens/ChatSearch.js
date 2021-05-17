@@ -80,15 +80,19 @@ const ChatSearch = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <SearchBar
+        <View  style={styles.searchContainer}> 
+        <View style={{flex: 0.3 }}><Text>Search</Text></View>
+        <View style={styles.rowContainers}><SearchBar
            containerStyle={{backgroundColor:'#ffffff',marginTop: 20}}
+           inputContainerStyle={{backgroundColor:'#fff000'}}
           round
           searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
           placeholder="Type Here..."
           value={search}
-        />
+        /></View>
+        </View>
         <FlatList
           data={filteredDataSource}
           keyExtractor={(item, index) => index.toString()}
@@ -107,6 +111,14 @@ const styles = StyleSheet.create({
   itemStyle: {
     padding: 20,
   },
+  searchContainer:{
+        flexDirection: "row",
+        width: '100%'
+      
+  },
+  rowContainers:{
+    flex: 0.7 
+  }
 });
 
 export default ChatSearch;

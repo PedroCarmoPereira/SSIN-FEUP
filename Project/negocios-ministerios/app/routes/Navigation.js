@@ -5,6 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
+import ChatSearch from '../screens/ChatSearch';
 import LandingScreen from '../screens/LandingScreen';
 import Header from '../shared/header';
 import HeaderLogo from '../shared/headerLogo';
@@ -18,6 +19,11 @@ const Pages = ({navigation}) => {
         <Stack.Screen
             name="LandingScreen"
             component={LandingScreen}
+            options={headerComponent}
+        />
+        <Stack.Screen
+            name="ChatSearch"
+            component={ChatSearch}
             options={headerComponent}
         />
       </Stack.Navigator>
@@ -36,6 +42,10 @@ const Home = ({navigation}) => {
       <Drawer.Navigator drawerPosition='right'>
         <Drawer.Screen
           name="Home"
+          component={Pages}
+        />
+        <Drawer.Screen
+          name="ChatSearch"
           component={Pages}
         />
       </Drawer.Navigator>
@@ -61,6 +71,7 @@ const Routes = ({navigation}) => {
             component={Home}
             options={{headerShown: false}}
         />
+
       </Stack.Navigator>
     </NavigationContainer>
   );
