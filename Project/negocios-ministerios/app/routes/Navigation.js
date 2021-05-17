@@ -25,7 +25,7 @@ const Home = ({navigation}) => {
     );
 };
 
-const Routes = ({navigation}) => {
+const Routes = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator mode="modal">

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Platform, Image, Button, ImageBackground, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Platform, Image, Button, ImageBackground, TouchableOpacity, StyleSheet, StatusBar } from 'react-native';
 
 function HeaderLogo({navigation}) {
     
@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         width: '69px',
-        height: '84px'
+        height: '84px',
     },
 });
 

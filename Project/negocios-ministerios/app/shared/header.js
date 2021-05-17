@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ImageBackground } from 'react-native';
+import { View, Text, Image, StyleSheet, ImageBackground, StatusBar } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 function Header({navigation}) {
@@ -9,10 +9,10 @@ function Header({navigation}) {
     }
 
     return (
-        <View tyle={styles.header}>
-        <ImageBackground source={require('../assets/HeaderBackground.png')} style={styles.header}>
-            <MaterialIcons name='menu' size={28} style={styles.Icon} onPress={pressHandler}/>
-        </ImageBackground>
+        <View style={styles.view}>
+            <ImageBackground source={require('../assets/HeaderBackground.png')} style={styles.header}>
+                <MaterialIcons name='menu' size={28} style={styles.Icon} onPress={pressHandler}/>
+            </ImageBackground>
         </View>
     );
 }
@@ -21,7 +21,9 @@ const styles = StyleSheet.create({
     view:{
         margin: 0,
         padding: 0,
-        marginBottom: '5%'
+        marginBottom: '5%',
+        paddingTop: Platform.OS === "android" ? StatusBar.currentHeight : 0,
+        paddingBottom: '2%'
     },
     header: {
         margin:0,
@@ -32,11 +34,9 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         paddingTop: '9%',
         width:'105%',
-        resizeMethod: 'auto',
-        resizeMode: 'repeat'
+        resizeMode: 'repeat',
     },
     Icon: {
-        right: 0
     }
 });
 
