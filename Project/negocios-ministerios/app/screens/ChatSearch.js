@@ -81,15 +81,15 @@ const ChatSearch = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View  style={styles.searchContainer}> 
-        <View style={{flex: 0.3 }}><Text>Search</Text></View>
+        <View style={{flex: 0.3 }}><Text style={styles.textField}>Search</Text></View>
         <View style={styles.rowContainers}><SearchBar
-           containerStyle={{backgroundColor:'#ffffff',marginTop: 20}}
-           inputContainerStyle={{backgroundColor:'#fff000'}}
+           containerStyle={{backgroundColor:'#ffffff',borderColor:'black',borderWidth: 1,borderRadius: 2,marginRight: '10%', paddingVertical: '-10%'}}
+           inputContainerStyle={{backgroundColor:'#fff'}}
           round
           searchIcon={{ size: 24 }}
           onChangeText={(text) => searchFilterFunction(text)}
           onClear={(text) => searchFilterFunction('')}
-          placeholder="Type Here..."
+          placeholder="Aa"
           value={search}
         /></View>
         </View>
@@ -113,11 +113,17 @@ const styles = StyleSheet.create({
   },
   searchContainer:{
         flexDirection: "row",
-        width: '100%'
-      
+        width: '100%',
+        alignItems: 'center',
+
   },
   rowContainers:{
     flex: 0.7 
+  },
+  textField:{
+      fontFamily:'Inter',
+      textAlign:'center',
+      fontSize: 24
   }
 });
 
