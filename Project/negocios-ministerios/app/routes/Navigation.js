@@ -6,6 +6,7 @@ import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
 import LandingScreen from '../screens/LandingScreen';
 import Header from '../shared/header';
+import HeaderLogo from '../shared/headerLogo';
 
 const Stack = createStackNavigator();
 const Routes = () => {
@@ -25,16 +26,18 @@ const Routes = () => {
         <Stack.Screen
             name="LandingScreen"
             component={LandingScreen}
-            options={({navigation}) => { 
-                return {
-                  headerTitle: () => <Header navigation={navigation} />
-                }
-              }
-            }
+            options={headerCOmponent}
         />
       </Stack.Navigator>
     </NavigationContainer>
   );
 };
+
+const headerCOmponent = ({navigation}) => { 
+  return {
+    headerTitle: () => (<Header navigation={navigation}/>),
+    headerLeft: () => (<HeaderLogo navigation={navigation} />),
+  }
+}
 
 export default Routes;

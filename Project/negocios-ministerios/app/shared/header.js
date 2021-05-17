@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import globalStyles from '../styles/globalStyles';
+import { View, Text, Image, StyleSheet, ImageBackground } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
 
 function Header({navigation}) {
@@ -11,30 +10,21 @@ function Header({navigation}) {
     }
 
     return (
-        <View style={styles.header}>
-            <Image
-                
-                source={require('../assets/Logo Portugal.png')}
-            />
-            <View>
-                <Text>Hello</Text>
-            </View>
+        <ImageBackground source={require('../assets/HeaderBackground.png')} style={styles.header}>
             <MaterialIcons name='menu' size={28} style={styles.Icon} onPress={pressHandler}/>
-        </View>
+        </ImageBackground>
     );
 }
 
 const styles = StyleSheet.create({
     header: {
-        width: '100%',
-        height: '100%',
+        flex: 1,
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: 'red'
+        alignItems: 'flex-end',
+        justifyContent: 'flex-end',
+        padding: -100
     },
     Icon: {
-        position: 'absolute',
         right: 0
     }
 });
