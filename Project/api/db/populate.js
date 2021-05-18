@@ -102,7 +102,7 @@ function populate() {
 
 	db.run(`CREATE TABLE story (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
-		title text,
+		title text UNIQUE,
 		article text,
 		author_id INTEGER, 
 		FOREIGN KEY(author_id) REFERENCES user(id)
@@ -111,7 +111,6 @@ function populate() {
 			if (err) {
 				if (err.errno !== 1) throw err;
 			}
-			db.run('DELETE FROM story');
 			let insert = 'INSERT INTO story (title, article, author_id) VALUES (?,?,?)';
 			let stmt = db.prepare(insert);
 			stmt.run('How it all began...', 'Some dude named Afonso decided Spain was shit...', 19);
