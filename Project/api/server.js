@@ -9,6 +9,8 @@ const HOST = '0.0.0.0';
 
 // App
 const app = express();
+
+// Parse incoming requests data
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 

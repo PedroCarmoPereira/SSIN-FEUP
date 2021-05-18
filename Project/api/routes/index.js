@@ -13,4 +13,5 @@ module.exports = (app) => {
     require('./auth.js')(app);
     require('./user.js')(app);
     require('./story.js')(app);
+    require('./delivery.js')(app);
 };
