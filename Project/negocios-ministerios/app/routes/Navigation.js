@@ -5,56 +5,71 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
-import {LandingScreenPage, ChatSearchPage, RequestVisaPage, LandingScreenAdminPage, CreateNewStoryScreenPage, RequestVisitPage,RequestMissionPage,AgentStatusPage,DecisionVisitPage} from './Pages';
+import {
+  LandingScreenPage,
+  ChatSearchPage,
+  RequestVisaPage,
+  LandingScreenAdminPage, 
+  CreateNewStoryScreenPage, 
+  RequestVisitPage, 
+  RequestMissionPage, 
+  AgentStatusPage, 
+  DecisionVisitPage, 
+  DecisionVisasPage
+} from './Pages';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
-const Home = ({navigation}) => {
-    return (
-      <Drawer.Navigator drawerPosition='right'>
-        <Drawer.Screen
-          name="Home"
-          component={LandingScreenPage}
-        />
-        <Drawer.Screen
-          name="Chat"
-          component={ChatSearchPage}
-        />
-        <Drawer.Screen
-          name="Visits"
-          component={RequestVisitPage}
-        />
-         <Drawer.Screen
-          name="Visas"
-          component={RequestVisaPage}
-        />
-        <Drawer.Screen
-          name="Missions"
-          component={RequestMissionPage}
-        />
-       <Drawer.Screen
-          name="Agents"
-          component={AgentStatusPage}
-        />
-        <Drawer.Screen
-          name="DecisionVisit"
-          component={DecisionVisitPage}
-        />
-        <Drawer.Screen
-          name="HomeAdmin"
-          component={LandingScreenAdminPage}
-        />
-        <Drawer.Screen
-            name="New Story"
-            component={CreateNewStoryScreenPage}
-            options={{
-              drawerLabel: () => null,
-              title: null,
-              drawerIcon: () => null
-            }}
-        />
-      </Drawer.Navigator>
-    );
+const Home = ({ navigation }) => {
+  return (
+    <Drawer.Navigator drawerPosition='right'>
+      <Drawer.Screen
+        name="Home"
+        component={LandingScreenPage}
+      />
+      <Drawer.Screen
+        name="Chat"
+        component={ChatSearchPage}
+      />
+      <Drawer.Screen
+        name="Visits"
+        component={RequestVisitPage}
+      />
+      <Drawer.Screen
+        name="Visas"
+        component={RequestVisaPage}
+      />
+      <Drawer.Screen
+        name="Missions"
+        component={RequestMissionPage}
+      />
+      <Drawer.Screen
+        name="Agents"
+        component={AgentStatusPage}
+      />
+      <Drawer.Screen
+        name="DecisionVisit"
+        component={DecisionVisitPage}
+      />
+      <Drawer.Screen
+        name="DecisionVisas"
+        component={DecisionVisasPage}
+      />
+      <Drawer.Screen
+        name="HomeAdmin"
+        component={LandingScreenAdminPage}
+      />
+      <Drawer.Screen
+        name="New Story"
+        component={CreateNewStoryScreenPage}
+        options={{
+          drawerLabel: () => null,
+          title: null,
+          drawerIcon: () => null
+        }}
+      />
+    </Drawer.Navigator>
+  );
 };
 
 const Routes = () => {
@@ -62,19 +77,19 @@ const Routes = () => {
     <NavigationContainer>
       <Stack.Navigator mode="modal">
         <Stack.Screen
-            name="WelcomeScreen"
-            component={WelcomeScreen}
-            options={{headerShown: false}}
+          name="WelcomeScreen"
+          component={WelcomeScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-            name="LoginScreen"
-            component={LoginScreen}
-            options={{headerShown: false}}
+          name="LoginScreen"
+          component={LoginScreen}
+          options={{ headerShown: false }}
         />
         <Stack.Screen
-            name="Home"
-            component={Home}
-            options={{headerShown: false}}
+          name="Home"
+          component={Home}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
