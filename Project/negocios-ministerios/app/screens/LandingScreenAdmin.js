@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, View, Image, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import { Button, View, Image, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import Card from '../shared/card';
 
 const styles = StyleSheet.create({
@@ -12,6 +12,10 @@ const styles = StyleSheet.create({
         fontSize: 25,
         fontStyle: 'italic',
         marginHorizontal: 10,
+    },
+    deleteIcon: {
+        position: 'absolute',
+        right: 0
     },
     content: {
         marginHorizontal: 10,
@@ -50,6 +54,11 @@ for(let i = 0; i < 3; i++){
                 <Text style={styles.headerText}>
                     How it all began...
                 </Text>
+
+                {/* Remove Button */}
+                <TouchableOpacity onPress={null} activeOpacity={0.5} style={styles.deleteIcon}>
+                    <Image source={require("../assets/delete_icon.png")} />
+                </TouchableOpacity>
             </View>
 
             {/* Card content */}
@@ -79,14 +88,32 @@ for(let i = 0; i < 3; i++){
     )
 }
 
-function LandingScreen(props) {
+function LandingScreenAdmin({navigation}) {
+    
+    const newStoryPressHandler = () => {
+        navigation.navigate('New Story');
+    }
+
     return (
         <SafeAreaView  style={{flex: 1}}>
             <ScrollView>
+                <Card>
+                    <View style={styles.header}>
+
+                        <TouchableOpacity onPress={newStoryPressHandler} activeOpacity={0.5}>
+                            <Image source={require("../assets/add_circle.png")} />
+                        </TouchableOpacity>
+
+                        <Text style={styles.headerText}>
+                            Create New Story
+                        </Text>
+                    </View>
+                </Card>
+
                 { cards }
             </ScrollView>
         </SafeAreaView >
     );
 }
 
-export default LandingScreen;
+export default LandingScreenAdmin;

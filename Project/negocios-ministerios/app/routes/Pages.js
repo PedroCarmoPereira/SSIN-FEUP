@@ -2,11 +2,37 @@ import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import ChatSearch from '../screens/ChatSearch';
 import LandingScreen from '../screens/LandingScreen';
+import LandingScreenAdmin from '../screens/LandingScreenAdmin';
 import Header from '../shared/header';
 import HeaderLogo from '../shared/headerLogo';
 import RequestVisa from '../screens/RequestVisa';
+import CreateNewStoryScreen from '../screens/CreateNewStoryScreen';
 
 const Stack = createStackNavigator();
+
+const CreateNewStoryScreenPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="New Story"
+              component={CreateNewStoryScreen}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
+
+const LandingScreenAdminPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="LandingScreenAdmin"
+              component={LandingScreenAdmin}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
 
 const LandingScreenPage = ({navigation}) => {
     return (
@@ -53,3 +79,5 @@ const headerComponent = ({navigation}) => {
 export {LandingScreenPage};
 export {ChatSearchPage};
 export {RequestVisaPage};
+export {LandingScreenAdminPage};
+export {CreateNewStoryScreenPage};

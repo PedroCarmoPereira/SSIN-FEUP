@@ -5,7 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
-import {LandingScreenPage, ChatSearchPage,RequestVisaPage} from './Pages';
+import {LandingScreenPage, ChatSearchPage, RequestVisaPage, LandingScreenAdminPage, CreateNewStoryScreenPage} from './Pages';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -24,6 +24,19 @@ const Home = ({navigation}) => {
         <Drawer.Screen
           name="RequestVisa"
           component={RequestVisaPage}
+        />
+        <Drawer.Screen
+          name="HomeAdmin"
+          component={LandingScreenAdminPage}
+        />
+        <Drawer.Screen
+            name="New Story"
+            component={CreateNewStoryScreenPage}
+            options={{
+              drawerLabel: () => null,
+              title: null,
+              drawerIcon: () => null
+            }}
         />
       </Drawer.Navigator>
     );
@@ -48,7 +61,6 @@ const Routes = () => {
             component={Home}
             options={{headerShown: false}}
         />
-
       </Stack.Navigator>
     </NavigationContainer>
   );
