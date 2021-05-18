@@ -1,84 +1,106 @@
 const db = require("../db/database.js");
 
 module.exports = (app) => {
-    app.get("/api/deliveries", (_, res, __) => {
-        var sql = "SELECT * FROM delivery"
-        var params = []
-        db.all(sql, params, (err, rows) => {
+    app.get("/api/deliveries", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
             if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
             }
-            res.json({
-                "message": "success",
-                "data": rows
-            })
-        });
-    });
-
-    app.get("/api/deliveries/:id", (req, res, __) => {
-        var sql = "SELECT * FROM delivery WHERE id = ?"
-        var params = [req.params.id]
-        db.get(sql, params, (err, rows) => {
-            if (err) {
-                res.status(400).json({ "error": err.message });
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            if (!rows) {
-                res.status(404).json({ "error": "id not found" });
-                return;
-            }
-            res.json({
-                "message": "success",
-                "data": rows
-            })
-        });
-    });
 
-    app.post("/api/deliveries", (req, res, __) => {
-        var sql = "INSERT INTO delivery (employee_id, content, op_date) VALUES (?,?,?)"
-        var params = [req.body.employee_id, req.body.content, req.body.op_date]
+            var select_all = "SELECT * FROM delivery";
 
-        if (req.body.employee_id && req.body.content && req.body.op_date) {
-            let stmt = db.prepare(sql);
-            stmt.run(params, (err, _) => {
+            db.all(select_all, [], (err, rows) => {
                 if (err) {
                     res.status(400).json({ "error": err.message });
                     return;
                 }
-                res.json({
-                    "message": "success",
-                    "data": params
+                res.status(200).json({
+                    "message": "Successfully retrieved all deliveries",
+                    "data": rows
                 })
             });
-        }
-        else {
-            res.status(400).json({ "error": "Missing parameters" });
-        }
+        });
     });
 
-    app.put("/api/deliveries/:id", (req, res, __) => {
-        var sql = "UPDATE delivery SET employee_id = ?, content = ?, op_date = ? WHERE id = ?"
-        var params = [req.body.employee_id, req.body.content, req.body.op_date, req.params.id]
+    app.get("/api/deliveries/:id", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
 
-        db.get("SELECT * FROM delivery WHERE id = ?", [req.params.id], (err, rows) => {
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
             if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
             }
-            if (!rows) {
-                res.status(404).json({ "error": "id not found" });
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
+
+            var select_one = "SELECT * FROM delivery WHERE id = ?";
+
+            db.get(select_one, [req.params.id], (err, row) => {
+                if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                }
+                if (!row) {
+                    res.status(404).json({ "error": "Delivery not found" });
+                    return;
+                }
+                res.status(200).json({
+                    "message": "Successfully retrieved the delivery",
+                    "data": rows
+                })
+            });
+        });
+    });
+
+    app.post("/api/deliveries", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
+            if (err) {
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+
+            var insert_delivery = "INSERT INTO delivery (employee_id, content, op_date) VALUES (?,?,?)";
+            var params = [req.body.employee_id, req.body.content, req.body.op_date];
+
             if (req.body.employee_id && req.body.content && req.body.op_date) {
-                let stmt = db.prepare(sql);
+                let stmt = db.prepare(insert_delivery);
                 stmt.run(params, (err, _) => {
                     if (err) {
                         res.status(400).json({ "error": err.message });
                         return;
                     }
-                    res.json({
-                        "message": "success",
+                    res.status(200).json({
+                        "message": "Successfully created new delivery",
                         "data": params
                     })
                 });
@@ -89,28 +111,101 @@ module.exports = (app) => {
         });
     });
 
-    app.delete("/api/deliveries/:id", (req, res, __) => {
-        var sql = "DELETE FROM delivery WHERE id = ?"
-        var params = [req.params.id]
+    app.put("/api/deliveries/:id", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
 
-        db.get("SELECT * FROM delivery WHERE id = ?", params, (err, rows) => {
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
             if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
             }
-            if (!rows) {
-                res.status(404).json({ "error": "id not found" });
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            let stmt = db.prepare(sql);
-            stmt.run(params, (err, _) => {
+
+            var find_delivery = "SELECT * FROM delivery WHERE id = ?";
+
+            db.get(find_delivery, [req.params.id], (err, row) => {
                 if (err) {
                     res.status(400).json({ "error": err.message });
                     return;
                 }
-                res.json({
-                    "message": "success",
-                })
+                if (!row) {
+                    res.status(404).json({ "error": "Delivery not found" });
+                    return;
+                }
+
+                var update_delivery = "UPDATE delivery SET employee_id = ?, content = ?, op_date = ? WHERE id = ?";
+                var params = [req.body.employee_id, req.body.content, req.body.op_date, req.params.id];
+
+                if (req.body.employee_id && req.body.content && req.body.op_date) {
+                    let stmt = db.prepare(update_delivery);
+                    stmt.run(params, (err, _) => {
+                        if (err) {
+                            res.status(400).json({ "error": err.message });
+                            return;
+                        }
+                        res.status(200).json({
+                            "message": "Successfully updated the delivery",
+                            "data": params
+                        })
+                    });
+                }
+                else {
+                    res.status(400).json({ "error": "Missing parameters" });
+                }
+            });
+        });
+    });
+
+    app.delete("/api/deliveries/:id", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
+            if (err) {
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+
+            var find_delivery = "SELECT * FROM delivery WHERE id = ?";
+
+            db.get(find_delivery, [req.params.id], (err, rows) => {
+                if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                }
+                if (!rows) {
+                    res.status(404).json({ "error": "Delivery not found" });
+                    return;
+                }
+
+                var delete_delivery = "DELETE FROM delivery WHERE id = ?";
+
+                let stmt = db.prepare(delete_delivery);
+                stmt.run([req.params.id], (err, _) => {
+                    if (err) {
+                        res.status(400).json({ "error": err.message });
+                        return;
+                    }
+                    res.status(200).json({
+                        "message": "Successfully deleted the delivery",
+                    })
+                });
             });
         });
     });
