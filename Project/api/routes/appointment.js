@@ -112,4 +112,70 @@ module.exports = (app) => {
 			});
      	}
     });
+
+	app.delete('/api/appointment/:id', (req, res) => {
+
+		if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+
+        if (!req.params.id){
+            res.status(403).send({
+                message:'Must set all request fields',
+            });
+        }
+        else {
+			var find_user = "SELECT * FROM user WHERE token = ?";
+
+			db.get(find_user, [req.header('Authorization')], (err, row) => {
+				if (err) {
+					res.status(400).json({ "error": err.message });
+					return;
+				}
+				if (!row) {
+					res.status(401).json({ "error": "Unauthorized" });
+					return;
+				}
+				if (row.access_lvl >= 1){
+					const id = req.params.id;
+					let del = 'DELETE FROM appointment WHERE id = ?';
+					let stmt = db.prepare(del);
+					stmt.run(id);
+					res.status(200).send({
+							message: 'Successfully deleted appointment',
+							id:id
+					});
+				}
+				else {
+					let find_appointment = "SELECT * FROM appointment WHERE requester_id = ?";
+					db.get(find_appointment, [row.id], (er, app) => {
+						if (er) {
+							res.status(400).json({ "error": err.message });
+							return;
+						}
+						if (!app) {
+							res.status(401).json({ "error": "Unauthorized" });
+							return;
+						}
+
+						if (parseInt(app.requester_id) === parseInt(row.id)){
+							const id = req.params.id;
+							let del = 'DELETE FROM appointment WHERE id = ?';
+							let stmt = db.prepare(del);
+							stmt.run(id);
+							res.status(200).send({
+									message: 'Successfully deleted appointment',
+									id:id
+							});
+						}
+						else {
+							res.status(401).json({ "error": "Unauthorized" });
+							return;
+						}
+					});
+				}
+			});
+     	}
+    });
 };
