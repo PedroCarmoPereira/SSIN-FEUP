@@ -7,6 +7,8 @@ import Header from '../shared/header';
 import HeaderLogo from '../shared/headerLogo';
 import RequestVisa from '../screens/RequestVisa';
 import CreateNewStoryScreen from '../screens/CreateNewStoryScreen';
+import RequestVisit from '../screens/RequestVisit';
+import RequestMission from '../screens/RequestMission';
 
 const Stack = createStackNavigator();
 
@@ -69,6 +71,32 @@ const RequestVisaPage = ({navigation}) => {
         </Stack.Navigator>
     );
 };
+
+const RequestVisitPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="RequestVisit"
+              component={RequestVisit}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
+
+
+const RequestMissionPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="RequestMission"
+              component={RequestMission}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
+
 const headerComponent = ({navigation}) => { 
     return {
       headerTitle: () => (<Header navigation={navigation}/>),
@@ -79,5 +107,7 @@ const headerComponent = ({navigation}) => {
 export {LandingScreenPage};
 export {ChatSearchPage};
 export {RequestVisaPage};
+export {RequestVisitPage};
+export {RequestMissionPage};
 export {LandingScreenAdminPage};
 export {CreateNewStoryScreenPage};

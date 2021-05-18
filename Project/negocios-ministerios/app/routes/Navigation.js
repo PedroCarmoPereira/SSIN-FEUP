@@ -5,8 +5,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import WelcomeScreen from '../screens/WelcomeScreen';
 import LoginScreen from '../screens/LoginScreen';
-import {LandingScreenPage, ChatSearchPage, RequestVisaPage, LandingScreenAdminPage, CreateNewStoryScreenPage} from './Pages';
-
+import {LandingScreenPage, ChatSearchPage, RequestVisaPage, LandingScreenAdminPage, CreateNewStoryScreenPage, RequestVisitPage,RequestMissionPage} from './Pages';
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
@@ -18,13 +17,23 @@ const Home = ({navigation}) => {
           component={LandingScreenPage}
         />
         <Drawer.Screen
-          name="ChatSearch"
+          name="Chat"
           component={ChatSearchPage}
         />
         <Drawer.Screen
-          name="RequestVisa"
+          name="Visits"
+          component={RequestVisitPage}
+        />
+         <Drawer.Screen
+          name="Visas"
           component={RequestVisaPage}
         />
+        <Drawer.Screen
+          name="Missions"
+          component={RequestMissionPage}
+        />
+       
+        
         <Drawer.Screen
           name="HomeAdmin"
           component={LandingScreenAdminPage}
