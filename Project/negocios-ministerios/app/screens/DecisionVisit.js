@@ -20,21 +20,21 @@ function DecisionVisit() {
                         <View style={styles.item}>
                             <View style={styles.avatar}>
                                 <Image source={require("../assets/Avatar.png")} />
-                                <View style={{ flexDirection: 'column' }}>
-                                    <Text >{item.name}</Text>
+                                <View style={{ flexDirection: 'column' , margin: 2}}>
+                                    <Text style={{fontWeight: 'bold'}}>{item.name}</Text>
                                     <Text >{item.position}</Text>
                                 </View>
                             </View>
                             <View style={styles.status}>
                                 <View style={{ flex: 0.7 }}>
                                     <Text style={styles.location}>{item.ministerName}</Text>
-                                    <Text style={styles.location}>{item.date}</Text>
+                                    <Text style={{textAlign:'right'}}>{item.date}</Text>
                                 </View>
                                 <View style={{ flexDirection: 'row',alignSelf: 'flex-end'}}>
-                                    <View style ={{backgroundColor: 'red',borderRadius: 20, margin:3}}>
+                                    <View style ={{backgroundColor: 'red',borderRadius: 20, margin:10,paddingHorizontal: 10}}>
                                     <Button title='Reject'/>
                                     </View>
-                                    <View style ={{backgroundColor: 'green',borderRadius: 20, margin:3}}>
+                                    <View style ={{backgroundColor: 'green',borderRadius: 20, margin:10, paddingHorizontal: 10}}>
                                     <Button title='Accept'/>
                                     </View>
                                 </View>
