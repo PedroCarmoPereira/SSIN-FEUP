@@ -58,6 +58,11 @@ const Home = ({ navigation }) => {
       <Drawer.Screen
         name="HomeAdmin"
         component={LandingScreenAdminPage}
+        options={{
+          drawerLabel: () => null,
+          title: null,
+          drawerIcon: () => null
+        }}
       />
       <Drawer.Screen
         name="New Story"
