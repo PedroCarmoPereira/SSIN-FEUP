@@ -62,14 +62,13 @@ module.exports = (app) => {
 
     //To Test
     //curl -X POST -H "Content-Type: application/json" -d '{"title": "linuxize@example.com"}' http://localhost:8010/api/stories/remove
-    app.post("/api/stories/remove", (req, res, _) => {
+    app.delete("/api/stories", (req, res, _) => {
         if (req.body.token === undefined ||req.body.title === undefined){
             res.status(400).json({
                 "message": "Missing Parameters",
             });
             return;
         }
-        //console.log(req.body);
         let select = 'SELECT * FROM user WHERE token = ?';
         db.get(select, [req.body.token], (err, row) => {
             if (err) {
@@ -94,13 +93,13 @@ module.exports = (app) => {
                 }
                 
                     res.status(200).json({
-                        "message": "Story not removed",
+                        "message": "Story successfully removed",
                     });
                 });
             }
             else {
                 res.status(403).json({
-                    "message": "Story not submited",
+                    "message": "Story not removed",
                 });
             }
         });
