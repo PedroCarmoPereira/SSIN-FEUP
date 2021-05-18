@@ -3,19 +3,58 @@ const db = require("../db/database.js");
 //TO TEST:
 //curl -X POST -H "Content-Type: application/json" -d '{"requester_id":"1", "motive":"Test", "set_date":"2021-01-20 20:20:20"}' http://localhost:8010/api/appointment
 module.exports = (app) => {
-    app.get("/api/appointment", (_, res, __) => {
-        var sql = "select * from appointment"
-        var params = []
-        db.all(sql, params, (err, rows) => {
+    app.get("/api/appointment", (req, res, __) => {
+		if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+
+		var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
             if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
             }
-            res.json({
-                "message": "success",
-                "data": rows
-            })
-        });
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+
+			if (row.access_lvl == 0){
+				var sql = "SELECT * FROM appointment WHERE requester_id = ?";
+				var params = [row.id];
+				db.all(sql, params, (err, rows) => {
+					if (err) {
+						res.status(400).json({ "error": err.message });
+						return;
+					}
+					res.json({
+						"message": "success",
+						"data": rows
+					})
+				});
+
+			}
+			else if (row.access_lvl >= 1) {
+                var sql = "select * from appointment";
+				var params = [];
+				db.all(sql, params, (err, rows) => {
+					if (err) {
+						res.status(400).json({ "error": err.message });
+						return;
+					}
+					res.json({
+						"message": "success",
+						"data": rows
+					})
+				});
+            }
+            else {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+		});
     });
 
 	app.post('/api/appointment', (req, res) => {
