@@ -9,6 +9,7 @@ import RequestVisa from '../screens/RequestVisa';
 import CreateNewStoryScreen from '../screens/CreateNewStoryScreen';
 import RequestVisit from '../screens/RequestVisit';
 import RequestMission from '../screens/RequestMission';
+import AgentStatus from '../screens/AgentStatus';
 
 const Stack = createStackNavigator();
 
@@ -84,6 +85,17 @@ const RequestVisitPage = ({navigation}) => {
     );
 };
 
+const AgentStatusPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="AgentStatus"
+              component={AgentStatus}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
 
 const RequestMissionPage = ({navigation}) => {
     return (
@@ -104,6 +116,8 @@ const headerComponent = ({navigation}) => {
     }
 };
 
+
+export {AgentStatusPage};
 export {LandingScreenPage};
 export {ChatSearchPage};
 export {RequestVisaPage};
