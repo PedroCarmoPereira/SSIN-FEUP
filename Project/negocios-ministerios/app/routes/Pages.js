@@ -4,6 +4,7 @@ import ChatSearch from '../screens/ChatSearch';
 import LandingScreen from '../screens/LandingScreen';
 import Header from '../shared/header';
 import HeaderLogo from '../shared/headerLogo';
+import RequestVisa from '../screens/RequestVisa';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +31,18 @@ const ChatSearchPage = ({navigation}) => {
         </Stack.Navigator>
     );
 };
-  
+
+const RequestVisaPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="RequestVisa"
+              component={RequestVisa}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
 const headerComponent = ({navigation}) => { 
     return {
       headerTitle: () => (<Header navigation={navigation}/>),
@@ -40,3 +52,4 @@ const headerComponent = ({navigation}) => {
 
 export {LandingScreenPage};
 export {ChatSearchPage};
+export {RequestVisaPage};
