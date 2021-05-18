@@ -56,12 +56,12 @@ module.exports = (app) => {
                     }
                     
                     res.status(200).json({
-                        "message": "Story successfully submited",
+                        "message": "Story successfully submitted",
                     });
               });
             } else {
                 res.status(403).json({
-                    "message": "Story not submited",
+                    "message": "Story not submitted",
                 });
             }
         });  
@@ -69,15 +69,15 @@ module.exports = (app) => {
 
     //To Test
     //curl -X POST -H "Content-Type: application/json" -d '{"title": "linuxize@example.com"}' http://localhost:8010/api/stories/remove
-    app.delete("/api/stories", (req, res, _) => {
-        if (req.body.token === undefined ||req.body.title === undefined){
-            res.status(400).json({
-                "message": "Missing Parameters",
-            });
+    app.delete("/api/stories/:id", (req, res, _) => {
+
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
             return;
         }
+
         let select = 'SELECT * FROM user WHERE token = ?';
-        db.get(select, [req.body.token], (err, row) => {
+        db.get(select, [req.header('Authorization')], (err, row) => {
             if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
@@ -88,9 +88,9 @@ module.exports = (app) => {
             }
 
             if (row.access_lvl >= 1){
-            let del = 'DELETE FROM story WHERE story.title = ?';
+            let del = 'DELETE FROM story WHERE story.id = ?';
             let stmt = db.prepare(del);
-            stmt.run(req.body.title, (err) => {
+            stmt.run(req.params.id, (err) => {
                 if (err){
                     console.log(err);
                     res.status(400).json({
