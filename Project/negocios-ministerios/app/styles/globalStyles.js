@@ -22,7 +22,8 @@ const globalStyles = StyleSheet.create({
         backgroundColor: "white",
         borderWidth: 1,
         borderRadius: 5,
-        width: 200
+        width: 200,
+        padding: 4,
     },
 });
 

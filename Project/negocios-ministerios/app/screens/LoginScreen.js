@@ -18,7 +18,9 @@ function LoginScreen({navigation}) {
                 <Text>Email</Text>
                 <TextInput style={globalStyles.TextInput}/>
                 <Text>Password</Text>
-                <TextInput style={globalStyles.TextInput}/>
+                <View>
+                    <TextInput style={globalStyles.TextInput} secureTextEntry/>
+                </View>
             </View>
             
             <Button

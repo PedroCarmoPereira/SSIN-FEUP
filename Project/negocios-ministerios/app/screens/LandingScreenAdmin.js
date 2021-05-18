@@ -88,14 +88,19 @@ for(let i = 0; i < 3; i++){
     )
 }
 
-function LandingScreenAdmin(props) {
+function LandingScreenAdmin({navigation}) {
+    
+    const newStoryPressHandler = () => {
+        navigation.navigate('New Story');
+    }
+
     return (
         <SafeAreaView  style={{flex: 1}}>
             <ScrollView>
                 <Card>
                     <View style={styles.header}>
 
-                        <TouchableOpacity onPress={null} activeOpacity={0.5}>
+                        <TouchableOpacity onPress={newStoryPressHandler} activeOpacity={0.5}>
                             <Image source={require("../assets/add_circle.png")} />
                         </TouchableOpacity>
 
