@@ -16,8 +16,6 @@ module.exports = (app) => {
         });
     });
 
-    //To test: Get token after register: $2a$10$WgXe7j5vy40zBI/uySd5dusx6oCbaDGDeQESCupaTOSBewrbRv5jm
-    //curl -X POST -H "Content-Type: application/json" -d '{"token":"$2a$10$KVYJpPewm6GzqACP22K5b./b15l.sluWn/8g8hQr/zPh7sM1MEQ22", "title": "linuxize@example.com", "article":"Tarticle"}' http://localhost:8010/api/stories
     app.post("/api/stories", (req, res, _) => {
 
         if (req.header('Authorization') === undefined) {
@@ -32,14 +30,13 @@ module.exports = (app) => {
             return;
         }
         let select = 'SELECT * FROM user WHERE token = ?';
-        console.log(req.header('Authorization'));
         db.get(select, [req.header('Authorization')], (err, row) => {
             if (err) {
                 res.status(400).json({ "error": err.message });
                 return;
             }
             if (!row) {
-                res.status(404).json({ "error": "Invalid Credentials" });
+                res.status(401).json({ "error": "Invalid Credentials" });
                 return;
             }
 
@@ -67,9 +64,7 @@ module.exports = (app) => {
         });  
     });
 
-    //To Test
-    //curl -X POST -H "Content-Type: application/json" -d '{"title": "linuxize@example.com"}' http://localhost:8010/api/stories/remove
-    app.delete("/api/stories/:id", (req, res, _) => {
+   app.delete("/api/stories/:id", (req, res, _) => {
 
         if (req.header('Authorization') === undefined) {
             res.status(401).json({ "error": "Unauthorized" });
@@ -83,7 +78,7 @@ module.exports = (app) => {
                 return;
             }
             if (!row) {
-                res.status(404).json({ "error": "Invalid Credentials" });
+                res.status(401).json({ "error": "Invalid Credentials" });
                 return;
             }
 
