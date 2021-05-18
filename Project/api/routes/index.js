@@ -13,6 +13,7 @@ module.exports = (app) => {
     require('./auth.js')(app);
     require('./user.js')(app);
     require('./story.js')(app);
+    require('./appointment')(app);
     require('./delivery.js')(app);
     require('./visa_request.js')(app);
 };
