@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         borderColor: 'black',
         borderRadius: 20,
         borderWidth: 2,
-        height: "90%",
+        height: "95%",
         padding: 10
     },
     picker: {
