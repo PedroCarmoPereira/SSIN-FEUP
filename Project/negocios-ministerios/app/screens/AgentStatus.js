@@ -34,17 +34,17 @@ function AgentStatus() {
                         <View style={styles.item}>
                             <View style={styles.avatar}>
                                 <Image source={require("../assets/Avatar.png")} />
-                                <Text >{item.name}</Text>
+                                <Text style={{fontSize: 15}}>{item.name}</Text>
                             </View>
                             <View style={styles.status}>
                                 <View style={{ flex: 0.7 }}>
                                     <Text style={styles.location}>{item.location}</Text>
                                 </View>
                                 <View style={{
-                                    borderRadius: 10,
+                                    borderRadius: 30,
                                     marginLeft: '55%', backgroundColor: colorFunc(item.status)
                                 }}>
-                                    <Button title={item.status} />
+                                    <Button disabled = {true} title={item.status} />
                                 </View>
                             </View>
                         </View>
@@ -65,8 +65,8 @@ const styles = StyleSheet.create({
         padding: 5,
         margin: 5,
         borderColor: 'black',
-        borderWidth: 2,
-        borderRadius: 5,
+        borderWidth: 1,
+        borderRadius: 10,
         flexDirection: 'row'
     },
     location: {
@@ -75,7 +75,9 @@ const styles = StyleSheet.create({
     }
     ,
     avatar: {
-        flex: 0.3
+        flex: 0.3,
+        justifyContent: 'center',
+    alignItems: 'center',
     },
     status: {
         flex: 0.7,

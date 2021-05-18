@@ -10,6 +10,7 @@ import CreateNewStoryScreen from '../screens/CreateNewStoryScreen';
 import RequestVisit from '../screens/RequestVisit';
 import RequestMission from '../screens/RequestMission';
 import AgentStatus from '../screens/AgentStatus';
+import DecisionVisit from '../screens/DecisionVisit';
 
 const Stack = createStackNavigator();
 
@@ -97,6 +98,18 @@ const AgentStatusPage = ({navigation}) => {
     );
 };
 
+const DecisionVisitPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="DecisionVisit"
+              component={DecisionVisit}
+              options={headerComponent}
+          />
+        </Stack.Navigator>
+    );
+};
+
 const RequestMissionPage = ({navigation}) => {
     return (
       <Stack.Navigator>
@@ -109,12 +122,14 @@ const RequestMissionPage = ({navigation}) => {
     );
 };
 
+
 const headerComponent = ({navigation}) => { 
     return {
       headerTitle: () => (<Header navigation={navigation}/>),
       headerLeft: () => (<HeaderLogo navigation={navigation} />),
     }
 };
+
 
 
 export {AgentStatusPage};
@@ -125,3 +140,4 @@ export {RequestVisitPage};
 export {RequestMissionPage};
 export {LandingScreenAdminPage};
 export {CreateNewStoryScreenPage};
+export {DecisionVisitPage};
