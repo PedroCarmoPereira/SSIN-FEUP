@@ -71,7 +71,7 @@ module.exports = (app) => {
                     return;
                 }
 
-                if (user.access_lvl >= 1 || user.id === row.requester_id) {
+                if (user.access_lvl >= 1 || user.id == row.requester_id) {
                     res.status(200).json({
                         "message": "Successfully retrieved the visa request",
                         "data": row
@@ -107,17 +107,23 @@ module.exports = (app) => {
             var params = [req.body.motive, req.body.applied, req.body.requester_id];
 
             if (req.body.motive && req.body.applied && req.body.requester_id) {
-                let stmt = db.prepare(insert_visa);
-                stmt.run(params, (err, _) => {
-                    if (err) {
-                        res.status(400).json({ "error": err.message });
-                        return;
-                    }
-                    res.status(200).json({
-                        "message": "Successfully created new visa request",
-                        "data": params
-                    })
-                });
+                if (row.access_lvl >= 1 || req.body.requester_id == row.id) {
+                    let stmt = db.prepare(insert_visa);
+                    stmt.run(params, (err, _) => {
+                        if (err) {
+                            res.status(400).json({ "error": err.message });
+                            return;
+                        }
+                        res.status(200).json({
+                            "message": "Successfully created new visa request",
+                            "data": params
+                        })
+                    });
+                }
+                else {
+                    res.status(401).json({ "error": "Current user cannot create visa requests for other people" });
+                    return;
+                }
             }
             else {
                 res.status(400).json({ "error": "Missing parameters" });
@@ -202,19 +208,20 @@ module.exports = (app) => {
                 return;
             }
 
-            if (row.access_lvl >= 2) {
-                var find_visa = "SELECT * FROM visa_request WHERE id = ?";
+            var user = row;
+            var find_visa = "SELECT * FROM visa_request WHERE id = ?";
 
-                db.get(find_visa, [req.params.id], (err, rows) => {
-                    if (err) {
-                        res.status(400).json({ "error": err.message });
-                        return;
-                    }
-                    if (!rows) {
-                        res.status(404).json({ "error": "Visa request not found" });
-                        return;
-                    }
+            db.get(find_visa, [req.params.id], (err, row) => {
+                if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                }
+                if (!row) {
+                    res.status(404).json({ "error": "Visa request not found" });
+                    return;
+                }
 
+                if (user.access_lvl >= 2 || row.requester_id == user.id) {
                     var delete_visa = "DELETE FROM visa_request WHERE id = ?";
 
                     let stmt = db.prepare(delete_visa);
@@ -227,12 +234,12 @@ module.exports = (app) => {
                             "message": "Successfully deleted the visa request",
                         })
                     });
-                });
-            }
-            else {
-                res.status(401).json({ "error": "Unauthorized" });
-                return;
-            }
+                }
+                else {
+                    res.status(401).json({ "error": "Current user cannot delete visa requests from other people" });
+                    return;
+                }
+            });
         });
     });
 };
