@@ -14,4 +14,5 @@ module.exports = (app) => {
     require('./user.js')(app);
     require('./story.js')(app);
     require('./appointment')(app);
+    require('./delivery.js')(app);
 };
