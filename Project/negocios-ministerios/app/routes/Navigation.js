@@ -15,10 +15,51 @@ import {
   RequestMissionPage, 
   AgentStatusPage, 
   DecisionVisitPage, 
-  DecisionVisasPage
+  DecisionVisasPage,
+  ChatRoomScreenPage,
+  headerComponent
 } from './Pages';
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
+
+const chatRooms = ({navigation}) => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="Chat"
+        component={ChatSearchPage}
+        options={headerComponent}
+        navigation={navigation}
+      />
+      <Stack.Screen
+        name="ChatRoom"
+        component={ChatRoomScreenPage}
+        options={headerComponent}
+        navigation={navigation}
+      />
+    </Stack.Navigator>
+  );
+};
+
+const homeAdmin = ({navigation}) => {
+  return (
+    <Stack.Navigator>
+      <Stack.Screen
+        name="HomeAdmin"
+        component={LandingScreenAdminPage}
+        options={headerComponent}
+        navigation={navigation}
+      />
+      <Stack.Screen
+        name="NewStory"
+        component={CreateNewStoryScreenPage}
+        options={headerComponent}
+        navigation={navigation}
+      />
+    </Stack.Navigator>
+  );
+};
 
 const Home = ({ navigation }) => {
   return (
@@ -26,52 +67,47 @@ const Home = ({ navigation }) => {
       <Drawer.Screen
         name="Home"
         component={LandingScreenPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="Chat"
-        component={ChatSearchPage}
+        component={chatRooms}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="Visits"
         component={RequestVisitPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="Visas"
         component={RequestVisaPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="Missions"
         component={RequestMissionPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="Agents"
         component={AgentStatusPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="DecisionVisit"
         component={DecisionVisitPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="DecisionVisas"
         component={DecisionVisasPage}
+        navigation={navigation}
       />
       <Drawer.Screen
         name="HomeAdmin"
-        component={LandingScreenAdminPage}
-        options={{
-          drawerLabel: () => null,
-          title: null,
-          drawerIcon: () => null
-        }}
-      />
-      <Drawer.Screen
-        name="New Story"
-        component={CreateNewStoryScreenPage}
-        options={{
-          drawerLabel: () => null,
-          title: null,
-          drawerIcon: () => null
-        }}
+        component={homeAdmin}
+        navigation={navigation}
       />
     </Drawer.Navigator>
   );

@@ -43,9 +43,9 @@ let cards = [];
 for(let i = 0; i < 3; i++){
 
     cards.push(
-        <Card>
+        <Card key = {i}>
             {/* card header */}
-            <View key = {i} style={styles.header}>
+            <View style={styles.header}>
                 <Image source={require("../assets/Apostrophe_icon.png")} />
                 <Text style={styles.headerText}>
                     How it all began...

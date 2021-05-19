@@ -12,16 +12,31 @@ import RequestMission from '../screens/RequestMission';
 import AgentStatus from '../screens/AgentStatus';
 import DecisionVisit from '../screens/DecisionVisit';
 import DecisionVisas from '../screens/DecisionVisas';
+import ChatRoomScreen from '../screens/ChatRoomScreen';
 
 const Stack = createStackNavigator();
+
+const ChatRoomScreenPage = ({navigation}) => {
+    return (
+      <Stack.Navigator>
+          <Stack.Screen
+              name="ChatRoom"
+              component={ChatRoomScreen}
+              options={{ headerShown: false }}
+              navigation={navigation}
+          />
+        </Stack.Navigator>
+    );
+};
 
 const CreateNewStoryScreenPage = ({navigation}) => {
     return (
       <Stack.Navigator>
           <Stack.Screen
-              name="New Story"
+              name="NewStory"
               component={CreateNewStoryScreen}
-              options={headerComponent}
+              options={{ headerShown: false }}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -33,7 +48,8 @@ const LandingScreenAdminPage = ({navigation}) => {
           <Stack.Screen
               name="LandingScreenAdmin"
               component={LandingScreenAdmin}
-              options={headerComponent}
+              options={{ headerShown: false }}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -46,6 +62,7 @@ const LandingScreenPage = ({navigation}) => {
               name="LandingScreen"
               component={LandingScreen}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -57,7 +74,8 @@ const ChatSearchPage = ({navigation}) => {
           <Stack.Screen
               name="ChatSearch"
               component={ChatSearch}
-              options={headerComponent}
+              options={{ headerShown: false }}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -70,6 +88,7 @@ const RequestVisaPage = ({navigation}) => {
               name="RequestVisa"
               component={RequestVisa}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -82,6 +101,7 @@ const RequestVisitPage = ({navigation}) => {
               name="RequestVisit"
               component={RequestVisit}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -94,6 +114,7 @@ const AgentStatusPage = ({navigation}) => {
               name="AgentStatus"
               component={AgentStatus}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -106,6 +127,7 @@ const DecisionVisitPage = ({navigation}) => {
               name="DecisionVisit"
               component={DecisionVisit}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -117,6 +139,7 @@ const DecisionVisasPage = ({navigation}) => {
               name="DecisionVisas"
               component={DecisionVisas}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -128,6 +151,7 @@ const RequestMissionPage = ({navigation}) => {
               name="RequestMission"
               component={RequestMission}
               options={headerComponent}
+              navigation={navigation}
           />
         </Stack.Navigator>
     );
@@ -142,7 +166,7 @@ const headerComponent = ({navigation}) => {
 };
 
 
-
+export {headerComponent};
 export {AgentStatusPage};
 export {LandingScreenPage};
 export {ChatSearchPage};
@@ -153,3 +177,4 @@ export {LandingScreenAdminPage};
 export {CreateNewStoryScreenPage};
 export {DecisionVisitPage};
 export {DecisionVisasPage};
+export {ChatRoomScreenPage};

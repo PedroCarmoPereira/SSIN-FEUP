@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 
-const ChatSearch = () => {
+const ChatSearch = ({navigation}) => {
   const [search, setSearch] = useState('');
   const [filteredDataSource, setFilteredDataSource] = useState([]);
   const [masterDataSource, setMasterDataSource] = useState([]);
@@ -74,24 +74,30 @@ const ChatSearch = () => {
 
   const getItem = (item) => {
     // Function for click on an item
-    alert('Id : ' + item.id + ' Title : ' + item.title);
+    // alert('Id : ' + item.id + ' Title : ' + item.title);
+    navigation.setParams({user: 'User name'});
+    navigation.navigate('ChatRoom');
   };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View  style={styles.searchContainer}> 
-        <View style={{flex: 0.3 }}><Text style={styles.textField}>Search</Text></View>
-        <View style={styles.rowContainers}><SearchBar
-           containerStyle={{backgroundColor:'#ffffff',borderColor:'black',borderWidth: 1,borderRadius: 2,marginRight: '10%', paddingVertical: '-10%'}}
-           inputContainerStyle={{backgroundColor:'#fff'}}
-          round
-          searchIcon={{ size: 24 }}
-          onChangeText={(text) => searchFilterFunction(text)}
-          onClear={(text) => searchFilterFunction('')}
-          placeholder="Aa"
-          value={search}
-        /></View>
+          <View style={{flex: 0.3 }}>
+            <Text style={styles.textField}>Search</Text>
+          </View>
+          <View style={styles.rowContainers}>
+            <SearchBar
+              containerStyle={{backgroundColor:'#ffffff',borderColor:'black',borderWidth: 1,borderRadius: 2,marginRight: '10%', paddingVertical: '-10%'}}
+              inputContainerStyle={{backgroundColor:'#fff'}}
+              round
+              searchIcon={{ size: 24 }}
+              onChangeText={(text) => searchFilterFunction(text)}
+              onClear={(text) => searchFilterFunction('')}
+              placeholder="Aa"
+              value={search}
+            />
+          </View>
         </View>
         <FlatList
           data={filteredDataSource}
@@ -121,7 +127,7 @@ const styles = StyleSheet.create({
     flex: 0.7 
   },
   textField:{
-      fontFamily:'Inter',
+      // fontFamily:'Inter',
       textAlign:'center',
       fontSize: 24
   }

@@ -91,7 +91,7 @@ for(let i = 0; i < 3; i++){
 function LandingScreenAdmin({navigation}) {
     
     const newStoryPressHandler = () => {
-        navigation.navigate('New Story');
+        navigation.navigate('NewStory');
     }
 
     return (
