@@ -1,10 +1,13 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { SafeAreaView, Text, StyleSheet, View, FlatList } from 'react-native';
-import { GiftedChat } from 'react-native-gifted-chat';
+import { GiftedChat, Bubble  } from 'react-native-gifted-chat';
 
-function ChatRoomScreen({route}) {
+function ChatRoomScreen({route, navigation}) {
 
-    console.log(route.params);
+    console.log('Route: ');
+    console.log(route);
+    console.log('Navigation:');
+    console.log(navigation);
     
     const [messages, setMessages] = useState([
     /**
@@ -31,14 +34,36 @@ function ChatRoomScreen({route}) {
 
     // helper method that is sends a message
     function handleSend(newMessage = []) {
-    setMessages(GiftedChat.append(messages, newMessage));
+        setMessages(GiftedChat.append(messages, newMessage));
     }
+
+    function renderBubble(props) {
+        return (
+          // Step 3: return the component
+          <Bubble
+            {...props}
+            wrapperStyle={{
+              right: {
+                // Here is the color change
+                backgroundColor: '#6646ee'
+              }
+            }}
+            textStyle={{
+              right: {
+                color: '#fff'
+              }
+            }}
+          />
+        );
+      }
 
     return (
     <GiftedChat
         messages={messages}
         onSend={newMessage => handleSend(newMessage)}
         user={{ _id: 1 }}
+        renderBubble={renderBubble}
+        alwaysShowSend
     />
     );
 }

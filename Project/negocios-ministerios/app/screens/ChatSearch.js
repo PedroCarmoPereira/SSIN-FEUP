@@ -74,9 +74,7 @@ const ChatSearch = ({navigation}) => {
 
   const getItem = (item) => {
     // Function for click on an item
-    // alert('Id : ' + item.id + ' Title : ' + item.title);
-    navigation.setParams({user: 'User name'});
-    navigation.navigate('ChatRoom');
+    navigation.navigate('ChatRoom', item);
   };
 
   return (

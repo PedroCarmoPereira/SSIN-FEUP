@@ -1,6 +1,5 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import ChatSearch from '../screens/ChatSearch';
 import LandingScreen from '../screens/LandingScreen';
 import LandingScreenAdmin from '../screens/LandingScreenAdmin';
 import Header from '../shared/header';
@@ -12,22 +11,8 @@ import RequestMission from '../screens/RequestMission';
 import AgentStatus from '../screens/AgentStatus';
 import DecisionVisit from '../screens/DecisionVisit';
 import DecisionVisas from '../screens/DecisionVisas';
-import ChatRoomScreen from '../screens/ChatRoomScreen';
 
 const Stack = createStackNavigator();
-
-const ChatRoomScreenPage = ({navigation}) => {
-    return (
-      <Stack.Navigator>
-          <Stack.Screen
-              name="ChatRoom"
-              component={ChatRoomScreen}
-              options={{ headerShown: false }}
-              navigation={navigation}
-          />
-        </Stack.Navigator>
-    );
-};
 
 const CreateNewStoryScreenPage = ({navigation}) => {
     return (
@@ -62,19 +47,6 @@ const LandingScreenPage = ({navigation}) => {
               name="LandingScreen"
               component={LandingScreen}
               options={headerComponent}
-              navigation={navigation}
-          />
-        </Stack.Navigator>
-    );
-};
-  
-const ChatSearchPage = ({navigation}) => {
-    return (
-      <Stack.Navigator>
-          <Stack.Screen
-              name="ChatSearch"
-              component={ChatSearch}
-              options={{ headerShown: false }}
               navigation={navigation}
           />
         </Stack.Navigator>
@@ -169,7 +141,6 @@ const headerComponent = ({navigation}) => {
 export {headerComponent};
 export {AgentStatusPage};
 export {LandingScreenPage};
-export {ChatSearchPage};
 export {RequestVisaPage};
 export {RequestVisitPage};
 export {RequestMissionPage};
@@ -177,4 +148,3 @@ export {LandingScreenAdminPage};
 export {CreateNewStoryScreenPage};
 export {DecisionVisitPage};
 export {DecisionVisasPage};
-export {ChatRoomScreenPage};
