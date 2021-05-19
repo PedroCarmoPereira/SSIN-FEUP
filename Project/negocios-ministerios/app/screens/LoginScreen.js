@@ -44,7 +44,7 @@ function LoginScreen({navigation}) {
     }
 
     return (
-        <SafeAreaView style={styles.safeViewLogin} >
+        <SafeAreaView flex={1}>
             {isLoading ? (<ActivityIndicator/>) : (
                 <ImageBackground source={require('../assets/Background.png')} style={globalStyles.container}>
 
