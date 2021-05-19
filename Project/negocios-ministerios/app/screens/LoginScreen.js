@@ -12,6 +12,14 @@ const styles = StyleSheet.create({
     },
 });
 
+
+const styles = StyleSheet.create({
+    safeViewLogin: {
+        flex: 1,
+        alignContent: 'center'
+    },
+});
+
 function LoginScreen({navigation}) {
 
     const movieURL = "https://reactnative.dev/movies.json";
@@ -44,7 +52,7 @@ function LoginScreen({navigation}) {
     }
 
     return (
-        <SafeAreaView flex={1}>
+        <SafeAreaView style={styles.safeViewLogin} >
             {isLoading ? (<ActivityIndicator/>) : (
                 <ImageBackground source={require('../assets/Background.png')} style={globalStyles.container}>
 
