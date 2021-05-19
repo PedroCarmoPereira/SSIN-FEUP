@@ -8,58 +8,17 @@ import LoginScreen from '../screens/LoginScreen';
 import {
   LandingScreenPage,
   RequestVisaPage,
-  LandingScreenAdminPage, 
-  CreateNewStoryScreenPage, 
   RequestVisitPage, 
   RequestMissionPage, 
   AgentStatusPage, 
   DecisionVisitPage, 
   DecisionVisasPage,
-  headerComponent
+  chatRooms,
+  homeAdmin
 } from './Pages';
-import ChatRoomScreen from '../screens/ChatRoomScreen';
-import ChatSearch from '../screens/ChatSearch';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
-
-const chatRooms = ({navigation}) => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="Chat"
-        component={ChatSearch}
-        options={headerComponent}
-        navigation={navigation}
-      />
-      <Stack.Screen
-        name="ChatRoom"
-        component={ChatRoomScreen}
-        options={headerComponent}
-        navigation={navigation}
-      />
-    </Stack.Navigator>
-  );
-};
-
-const homeAdmin = ({navigation}) => {
-  return (
-    <Stack.Navigator>
-      <Stack.Screen
-        name="HomeAdmin"
-        component={LandingScreenAdminPage}
-        options={headerComponent}
-        navigation={navigation}
-      />
-      <Stack.Screen
-        name="NewStory"
-        component={CreateNewStoryScreenPage}
-        options={headerComponent}
-        navigation={navigation}
-      />
-    </Stack.Navigator>
-  );
-};
 
 const Home = ({ navigation }) => {
   return (
