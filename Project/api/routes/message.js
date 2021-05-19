@@ -85,6 +85,43 @@ module.exports = (app) => {
         });
     });
 
+    app.get("/api/messages/:id1/:id2", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
+            if (err) {
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+            if (row.access_lvl < 1 || (req.params.id1 != row.id && req.params.id2 != row.id)) {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+
+            var select = "SELECT * FROM message WHERE sender_id = ? AND receiver_id = ?";
+
+            db.all(select, [req.params.id1, req.params.id2], (err, rows) => {
+                if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                }
+                res.status(200).json({
+                    "message": "Successfully retrieved the messages",
+                    "data": rows
+                })
+            });
+        });
+    });
+
     app.post("/api/messages", (req, res, __) => {
         if (req.header('Authorization') === undefined) {
             res.status(401).json({ "error": "Unauthorized" });
