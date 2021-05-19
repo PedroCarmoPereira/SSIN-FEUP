@@ -16,4 +16,5 @@ module.exports = (app) => {
     require('./appointment')(app);
     require('./delivery.js')(app);
     require('./visa_request.js')(app);
+    require('./message.js')(app);
 };
