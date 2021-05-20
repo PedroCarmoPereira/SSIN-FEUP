@@ -39,7 +39,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Invalid Credentials" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl >= 1){
                 let insert = 'INSERT INTO story (title, article, author_id) VALUES (?,?,?)';
                 let stmt = db.prepare(insert);
@@ -81,7 +81,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Invalid Credentials" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl >= 1){
             let del = 'DELETE FROM story WHERE story.id = ?';
             let stmt = db.prepare(del);

@@ -38,9 +38,13 @@ module.exports = (app) => {
 							return;
 						}
 						const token = bcrypt.hashSync(username, 10);
-						let insert = 'UPDATE user SET token = ? WHERE username = ?';
-						let stmt = db.prepare(insert);
-						stmt.run(token, username);
+						let insert0 = 'UPDATE user SET token = ? WHERE username = ?';
+						let stmt0 = db.prepare(insert0);
+						stmt0.run(token, username);
+						
+						let insert1 = 'INSERT INTO ip_client (uid, addr) VALUES (?, ?)';
+						let stmt1 = db.prepare(insert1);
+						stmt1.run(user_id, req.connection.remoteAddress);
 						res.status(200).send({
 							message: 'Successfully Registered',
 							token: token

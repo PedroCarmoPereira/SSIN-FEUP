@@ -56,6 +56,12 @@ function populate() {
 		console.log('Error dropping delivery');
 	}
 
+	try {
+		db.exec('DROP TABLE IF EXISTS ip_client');
+	} catch {
+		console.log('Error dropping ip_client');
+	}
+
 	db.run(`CREATE TABLE user (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name text,
@@ -159,6 +165,14 @@ function populate() {
 		content TEXT,
 		op_date date,
 		FOREIGN KEY(employee_id) REFERENCES user(id)
+	  )`
+	);
+
+	db.run(`CREATE TABLE ip_client(
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uid INTEGER NOT NULL,
+		addr TEXT,
+		FOREIGN KEY(uid) REFERENCES user(id)
 	  )`
 	);
 }

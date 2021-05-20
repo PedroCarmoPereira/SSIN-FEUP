@@ -21,6 +21,8 @@ module.exports = (app) => {
                 return;
             }
 
+			require('./registerip')(row.id, req.connection.remoteAddress);
+
 			if (row.access_lvl == 0){
 				var sql = "SELECT * FROM appointment WHERE requester_id = ?";
 				var params = [row.id];
@@ -81,6 +83,7 @@ module.exports = (app) => {
 					res.status(401).json({ "error": "Unauthorized" });
 					return;
 				}
+				require('./registerip')(row.id, req.connection.remoteAddress);
 				if (row.access_lvl >= 1 || (parseInt(row.id) === parseInt(req.body.requester_id))){
 					const id = req.body.requester_id;
 					const mo = req.body.motive;
@@ -137,6 +140,8 @@ module.exports = (app) => {
 					res.status(401).json({ "error": "Unauthorized" });
 					return;
 				}
+				
+				require('./registerip')(row.id, req.connection.remoteAddress);
 				if (row.access_lvl >= 1){
 					const id = req.params.id;
 					let del = 'DELETE FROM appointment WHERE id = ?';
