@@ -1,12 +1,25 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Text, View, ImageBackground, Button } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import globalStyles from '../styles/globalStyles';
+import api from '../routes/Api';
 
 function LoginScreen({navigation}) {
-    
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
     const pressHandler = () => {
-        navigation.navigate('Home');
+        api.post('/api/register', {
+            username,
+            password,
+        })
+          .then(function (response) {
+            console.log(response);
+            navigation.navigate('Home');
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+
     }
 
     return (
@@ -15,11 +28,13 @@ function LoginScreen({navigation}) {
             <Text>Login</Text>
 
             <View>
-                <Text>Email</Text>
-                <TextInput style={globalStyles.TextInput}/>
+                <Text>Username</Text>
+                <TextInput onChangeText={setUsername}
+                value={username} style={globalStyles.TextInput}/>
                 <Text>Password</Text>
                 <View>
-                    <TextInput style={globalStyles.TextInput} secureTextEntry/>
+                    <TextInput onChangeText={setPassword}
+                    value={password} style={globalStyles.TextInput} secureTextEntry/>
                 </View>
             </View>
             
