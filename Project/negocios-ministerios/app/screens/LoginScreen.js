@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { Text, View, ImageBackground, Button } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import globalStyles from '../styles/globalStyles';
-import api from '../routes/Api';
+import { api, storeToken } from '../utils/Api';
 
 function LoginScreen({navigation}) {
     const [username, setUsername] = useState("");
@@ -12,9 +12,10 @@ function LoginScreen({navigation}) {
             username,
             password,
         })
-          .then(function (response) {
-            console.log(response);
-            navigation.navigate('Home');
+          .then(async (response) => {
+            if (response.status == 200) {
+                storeToken(response.data.token);
+            }
           })
           .catch(function (error) {
             console.log(error);
