@@ -1,6 +1,7 @@
-import React from 'react';
-import { Button, View, Image, Text, StyleSheet, SafeAreaView, ScrollView } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import { Button, View, Image, Text, StyleSheet, SafeAreaView, ScrollView, FlatList } from 'react-native';
 import Card from '../shared/card';
+import { api, storeToken, getToken } from '../utils/Api';
 
 const styles = StyleSheet.create({
     header: {
@@ -37,56 +38,70 @@ const styles = StyleSheet.create({
     }
 });
 
-// Aux loop to create more cards
-let cards = [];
-
-for(let i = 0; i < 3; i++){
-
-    cards.push(
-        <Card key = {i}>
-            {/* card header */}
-            <View style={styles.header}>
-                <Image source={require("../assets/Apostrophe_icon.png")} />
-                <Text style={styles.headerText}>
-                    How it all began...
-                </Text>
-            </View>
-
-            {/* Card content */}
-            <View style={styles.content}>
-                <Text>
-                    The history of Portugal can be traced from circa 400,000 years ago, when the region of present-day Portugal was inhabited by Homo heidelbergensis. The oldest human fossil is the skull discovered in the Cave of Aroeira in Almonda. Later Neanderthals roamed the northern Iberian peninsula. Homo sapiens arrived in Portugal around 35,000 years ago.
-                </Text>
-            </View>
-
-            {/* Card footer */}
-            <View style={styles.footer}>
-                <Image source={require("../assets/Avatar.png")} />
-                
-                <View style={styles.footerText}>
-                    {/* Name */}
-                    <Text style={styles.footerTextName}>
-                        Tiago Ligação
-                    </Text>
-                    {/* Ocupation */}
-                    <Text style={styles.footerTextOcupation}>
-                        Minister
-                    </Text>
-                </View>
-                
-            </View>
-        </Card>
-    )
-}
-
 function LandingScreen(props) {
+
+    const [data, setData] = useState(null);
+    
+    useEffect(() => {
+        api.get('/api/stories')
+        .then(async (response) => {
+            if (response.status == 200) {
+                setData(response.data.data);
+                //console.log(data[0].title);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }, []);
+
     return (
         <SafeAreaView  style={{flex: 1}}>
-            <ScrollView>
-                { cards }
-            </ScrollView>
+                <FlatList
+                    ListEmptyComponent={<Text>olaola</Text>}
+                    data={data != null ? data : []}
+                    keyExtractor={({ id }) => String(id)}
+                    renderItem={(data) => (
+                        <Card>
+                            <View style={styles.header}>
+                                <Image source={require("../assets/Apostrophe_icon.png")} />
+                                <Text style={styles.headerText}>
+                                    {data.item.title}
+                                </Text>
+                            </View>
+
+                            {/* Card content */}
+                            <View style={styles.content}>
+                                <Text
+                                    multiline = {true}
+                                >
+                                    {data.item.article}
+                                </Text>
+                            </View>
+
+                            {/* Card footer */}
+                            <View style={styles.footer}>
+                                <Image source={require("../assets/Avatar.png")} />
+
+                                <View style={styles.footerText}>
+                                    {/* Name */}
+                                    <Text style={styles.footerTextName}>
+                                        {data.item.author_id}
+                                    </Text>
+                                    {/* Ocupation */}
+                                    <Text style={styles.footerTextOcupation}>
+                                        Minister
+                                    </Text>
+                                </View>
+
+                            </View>
+                        </Card>
+                    )}
+                />
         </SafeAreaView >
     );
 }
+
+
 
 export default LandingScreen;

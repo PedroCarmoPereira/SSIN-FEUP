@@ -118,8 +118,6 @@ const Routes = () => {
           options={{ headerShown: false }}
         />
         )}
-        
-        
       </Stack.Navigator>
     </NavigationContainer>
   );

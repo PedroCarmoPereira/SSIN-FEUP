@@ -9,7 +9,6 @@ function LoginScreen({navigation}) {
     const [password, setPassword] = useState("");
     const pressHandler = () => {
 
-        console.log('olaa');
         api.post('/api/register', {
             username,
             password,
@@ -17,13 +16,11 @@ function LoginScreen({navigation}) {
           .then(async (response) => {
             if (response.status == 200) {
                 storeToken(response.data.token);
-                navigation.navigate('Home');
             }
           })
           .catch(function (error) {
             console.log(error);
         });
-        console.log('adeus');
     }
 
     return (
