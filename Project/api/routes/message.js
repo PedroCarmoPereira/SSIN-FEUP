@@ -109,9 +109,12 @@ module.exports = (app) => {
                 return;
             }
             require('./registerip')(row.id, req.connection.remoteAddress);
-            var select = "SELECT * FROM message WHERE sender_id = ? AND receiver_id = ?";
+            var select = `SELECT message.*, sender.name AS sender_name, receiver.name AS receiver_name
+            FROM message JOIN user AS sender ON message.sender_id = sender.id
+            JOIN user AS receiver ON message.receiver_id = receiver.id
+            WHERE(message.sender_id = ? AND message.receiver_id = ?) OR(message.sender_id = ? AND message.receiver_id = ?)`;
 
-            db.all(select, [req.params.id1, req.params.id2], (err, rows) => {
+            db.all(select, [req.params.id1, req.params.id2, req.params.id2, req.params.id1], (err, rows) => {
                 if (err) {
                     res.status(400).json({ "error": err.message });
                     return;
