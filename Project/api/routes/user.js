@@ -2,21 +2,6 @@ const db = require("../db/database.js");
 
 module.exports = (app) => {
 
-    app.get("/api/tokens", (req, res, __) => {
-        var find_user = "SELECT token FROM user";
-
-        db.get(find_user, (err, row) => {
-            if (err) {
-                res.status(400).json({ "error": err.message });
-                return;
-            }
-            else {
-                res.status(200).json({ data:row });
-                return;
-            }
-        })
-    });
-
     app.get("/api/token", (req, res, __) => {
         if (req.header('Authorization') === undefined) {
             res.status(401).json({ "error": "Unauthorized" });
@@ -30,7 +15,7 @@ module.exports = (app) => {
                 return;
             }
 
-            if (!row){
+            if (!row) {
                 res.status(404).json({ "error": "Invalid Token" });
                 return;
             }
@@ -87,15 +72,14 @@ module.exports = (app) => {
                 res.status(400).json({ "error": err.message });
                 return;
             }
-
-            if (!row){
-                res.status(404).json({ "error": "Invalid Token" });
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            else {
-                res.status(200).json({ "message": "Retrived user", "data": row });
-                return;
-            }
+            res.status(200).json({
+                "message": "Successfully retrieved user",
+                "data": row
+            })
         })
     });
 };
