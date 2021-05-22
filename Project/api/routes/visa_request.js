@@ -18,7 +18,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl >= 1) {
                 var select_all = "SELECT * FROM visa_request";
 
@@ -57,7 +57,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var user = row;
             var select_one = "SELECT * FROM visa_request WHERE id = ?";
 
@@ -70,7 +70,6 @@ module.exports = (app) => {
                     res.status(404).json({ "error": "Visa request not found" });
                     return;
                 }
-
                 if (user.access_lvl >= 1 || user.id == row.requester_id) {
                     res.status(200).json({
                         "message": "Successfully retrieved the visa request",
@@ -102,7 +101,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var insert_visa = "INSERT INTO visa_request (motive, applied, requester_id) VALUES (?,?,?)";
             var params = [req.body.motive, req.body.applied, req.body.requester_id];
 
@@ -148,7 +147,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl >= 2) {
                 var find_visa = "SELECT * FROM visa_request WHERE id = ?";
 
@@ -207,7 +206,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var user = row;
             var find_visa = "SELECT * FROM visa_request WHERE id = ?";
 

@@ -19,6 +19,7 @@ module.exports = (app) => {
                 return;
             }
 
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl >= 1) {
                 var select_all = "SELECT * FROM message WHERE sender_id = ? OR receiver_id = ?";
 
@@ -58,6 +59,7 @@ module.exports = (app) => {
                 return;
             }
 
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var user = row;
             var select_one = "SELECT * FROM message WHERE id = ?";
 
@@ -106,7 +108,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var select = "SELECT * FROM message WHERE sender_id = ? AND receiver_id = ?";
 
             db.all(select, [req.params.id1, req.params.id2], (err, rows) => {
@@ -143,7 +145,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var insert_message = "INSERT INTO message (sender_id, receiver_id, content, sent_date) VALUES (?,?,?,?)";
             var params = [req.body.sender_id, req.body.receiver_id, req.body.content, req.body.sent_date];
 

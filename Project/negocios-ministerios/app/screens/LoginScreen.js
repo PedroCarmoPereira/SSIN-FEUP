@@ -1,12 +1,30 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Text, View, ImageBackground, Button } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import globalStyles from '../styles/globalStyles';
+import { api, storeToken } from '../utils/Api';
 
-function LoginScreen({navigation}) {
-    
+function LoginScreen({ navigation }) {
+    const [username, setUsername] = useState("");
+    const [password, setPassword] = useState("");
+    const [disableSubmit, setDisableSubmit] = useState(false);
     const pressHandler = () => {
-        navigation.navigate('Home');
+        setDisableSubmit(true);
+        api.post('/api/register', {
+            username,
+            password,
+        })
+            .then(async (response) => {
+                console.log(response.data);
+                if (response.status == 200) {
+                    storeToken(response.data.token);
+                }
+            })
+            .catch(function (error) {
+                setDisableSubmit(false);
+                console.log(error);
+            });
+
     }
 
     return (
@@ -15,19 +33,22 @@ function LoginScreen({navigation}) {
             <Text>Login</Text>
 
             <View>
-                <Text>Email</Text>
-                <TextInput style={globalStyles.TextInput}/>
+                <Text>Username</Text>
+                <TextInput onChangeText={setUsername}
+                    value={username} style={globalStyles.TextInput} />
                 <Text>Password</Text>
                 <View>
-                    <TextInput style={globalStyles.TextInput} secureTextEntry/>
+                    <TextInput onChangeText={setPassword}
+                        value={password} style={globalStyles.TextInput} secureTextEntry />
                 </View>
             </View>
-            
+
             <Button
                 title='Login'
                 onPress={pressHandler}
                 color="red"
                 style={globalStyles.getStartedButton}
+                disabled={disableSubmit}
             />
         </ImageBackground>
     );

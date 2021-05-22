@@ -18,7 +18,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl >= 1) {
                 var select_all = "SELECT * FROM delivery";
 
@@ -57,7 +57,8 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            
+            require('./registerip')(row.id, req.connection.remoteAddress);
             var user = row;
             var select_one = "SELECT * FROM delivery WHERE id = ?";
 
@@ -102,7 +103,8 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
+            
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl === 3) {
                 var insert_delivery = "INSERT INTO delivery (employee_id, content, op_date) VALUES (?,?,?)";
                 var params = [req.body.employee_id, req.body.content, req.body.op_date];
@@ -149,6 +151,7 @@ module.exports = (app) => {
                 return;
             }
 
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl === 3) {
                 var find_delivery = "SELECT * FROM delivery WHERE id = ?";
 
@@ -208,6 +211,7 @@ module.exports = (app) => {
                 return;
             }
 
+            require('./registerip')(row.id, req.connection.remoteAddress);
             if (row.access_lvl === 3) {
                 var find_delivery = "SELECT * FROM delivery WHERE id = ?";
 
