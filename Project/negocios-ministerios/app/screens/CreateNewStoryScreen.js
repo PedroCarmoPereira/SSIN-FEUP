@@ -1,11 +1,62 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import Card from '../shared/card';
 import { Button, View, Image, Text, StyleSheet, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
+import { api, storeToken, getToken } from '../utils/Api';
 
 function CreateNewStoryScreen({navigator}) {
     
-    const [textInputValue, setTextInputValue] = React.useState('');
+    const [id, setUser] = useState(null);
+    const [title, setTitle] = useState(null);
+    const [article, setArticle] = useState(null);
+
+    const getUser = async () => {
+        let t = await getToken();
+        api.get('/api/user', {
+            headers:{
+                'Authorization': `${t}`
+            }
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                setUser(response.data.data.id);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    useEffect(() => {
+        getUser();
+    }, []);
+
+    const publishStory = async () => {
+        
+        console.log('Data: ');
+        console.log(id);
+        console.log(title);
+        console.log(article);
+
+        let t = await getToken();
+        console.log(t);
+        api.post('/api/stories', {
+            headers:{
+                'Authorization': `${t}`
+            },
+            title,
+            article,
+            id
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                console.log(response);
+                alert('Success!');
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
 
     return (
         <SafeAreaView  style={{flex: 1}}>
@@ -17,7 +68,11 @@ function CreateNewStoryScreen({navigator}) {
                     {/* Title input box */}
                     <View style={styles.content}>
                         <Text>Title</Text>
-                        <TextInput style={styles.titleInput}/>
+                        <TextInput
+                            onChangeText={title => setTitle(title)}
+                            value={title}
+                            style={styles.titleInput}
+                        />
                     </View>
 
                     {/* Story input box */}
@@ -27,13 +82,18 @@ function CreateNewStoryScreen({navigator}) {
                             style={styles.storyInput}
                             editable
                             multiline
-                            onChangeText={text => setTextInputValue(text)}
-                            value={textInputValue}
+                            onChangeText={article => setArticle(article)}
+                            value={article}
                         />
                     </View>
 
                     <View style={styles.publishButton}>
-                        <Button title='Publish' color="red" width="20%"/>
+                        <Button
+                            onPress={publishStory}
+                            title='Publish'
+                            color="red"
+                            width="20%"
+                        />
                     </View>
                 </Card>
             </ScrollView>
