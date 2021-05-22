@@ -57,7 +57,7 @@ function LandingScreen(props) {
     return (
         <SafeAreaView  style={{flex: 1}}>
                 <FlatList
-                    ListEmptyComponent={<Text>olaola</Text>}
+                    ListEmptyComponent={<Text></Text>}
                     data={data != null ? data : []}
                     keyExtractor={({ id }) => String(id)}
                     renderItem={(data) => (

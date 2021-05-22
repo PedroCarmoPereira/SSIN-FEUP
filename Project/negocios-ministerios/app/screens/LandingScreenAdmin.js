@@ -62,6 +62,25 @@ function LandingScreenAdmin({navigation}) {
         navigation.navigate('NewStory');
     }
 
+    const deleteStory = async (id) => {
+        let t = await getToken();
+        api.delete('/api/stories/' + id, {
+            headers:{
+                'Authorization': `${t}`
+            }
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                alert('Story Deleted!');
+                console.log(id);
+                setData(data.filter(item => item.id !== id));
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     return (
         <SafeAreaView  style={{flex: 1}}>
                 <Card>
@@ -78,7 +97,7 @@ function LandingScreenAdmin({navigation}) {
                 </Card>
 
                 <FlatList
-                    ListEmptyComponent={<Text>olaola</Text>}
+                    ListEmptyComponent={<Text></Text>}
                     data={data != null ? data : []}
                     keyExtractor={({ id }) => String(id)}
                     renderItem={(data) => (
@@ -90,7 +109,11 @@ function LandingScreenAdmin({navigation}) {
                                 </Text>
 
                                 {/* Remove Button */}
-                                <TouchableOpacity onPress={null} activeOpacity={0.5} style={styles.deleteIcon}>
+                                <TouchableOpacity
+                                    onPress={() => deleteStory(data.item.id)}
+                                    activeOpacity={0.5}
+                                    style={styles.deleteIcon}
+                                >
                                     <Image source={require("../assets/delete_icon.png")} />
                                 </TouchableOpacity>
                             </View>
