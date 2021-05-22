@@ -47,7 +47,6 @@ function LandingScreen(props) {
         .then(async (response) => {
             if (response.status == 200) {
                 setData(response.data.data);
-                //console.log(data[0].title);
             }
         })
         .catch(function (error) {

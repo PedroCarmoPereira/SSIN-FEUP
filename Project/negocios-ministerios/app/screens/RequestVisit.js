@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import { Text, View, Picker, StyleSheet, Button, SafeAreaView, ScrollView } from 'react-native';
 import Card from '../shared/card';
 import { TextInput } from 'react-native-gesture-handler';
 import globalStyles from '../styles/globalStyles';
 import CalendarPicker from 'react-native-calendar-picker';
+import { api, getToken } from '../utils/Api';
 
 const UselessTextInput = (props) => {
     return (
@@ -16,49 +17,84 @@ const UselessTextInput = (props) => {
 }
 
 function RequestVisit(props) {
-    const [value, onChangeText] = React.useState('');
-    const [selectedValue, setSelectedValue] = useState("java");
+    
+    const [selectedValue, setSelectedValue] = useState("");
+
+    const [requester_id, setUser] = useState(null);
+    const [motive, setMotive] = useState(null);
+    const [set_date, setDate] = useState(null);
+
+    const getUser = async () => {
+        let t = await getToken();
+        api.get('/api/user', {
+            headers:{
+                'Authorization': `${t}`
+            }
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                setUser(response.data.data.id);
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+    useEffect(() => {
+        getUser();
+    }, []);
+    
+    const setAppointment = async () => {
+        console.log('Data: ');
+        console.log(requester_id);
+        console.log(motive);
+        console.log(set_date);
+        let t = await getToken();
+        console.log(t);
+        api.post('/api/appointment', {
+            headers:{
+                'Authorization': `${t}`
+            },
+            requester_id,
+            motive,
+            set_date
+        })
+        .then(async (response) => {
+            if (response.status == 200) {
+                console.log(response);
+                alert('Success!');
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
+    }
+
     return (
         <SafeAreaView  style={{flex: 1}}>
             <ScrollView>
                 <Card style={styles.container}>
                     <Text style={globalStyles.TitleText} > Marcar Visita </Text>
 
-                    <Text > Ministry* </Text>
-                    <View style={styles.picker}>
-                        <Picker
-                            selectedValue={selectedValue}
-                            onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
-                        >
-                            <Picker.Item label="Java" value="java" />
-                            <Picker.Item label="JavaScript" value="js" />
-                        </Picker>
-                    </View>
-
-                    <Text > Motive </Text>
+                    <Text > Motive *</Text>
                     <View
                         style={styles.picker}>
                         <UselessTextInput
                             style={styles.motiveInput}
                             multiline
                             numberOfLines={10}
-                            onChangeText={text => onChangeText(text)}
-                            value={value}
+                            onChangeText={motive => setMotive(motive)}
+                            value={motive}
                         />
                     </View>
 
                     <Text > Date* </Text>
                     <View >
                         <CalendarPicker
+                            onDateChange={set_date => setDate(set_date)}
                         />
                         <Button
-                        onPress={() => {
-                            if (this.state.text.trim() === "") {
-                            this.setState(() => ({ nameError: "First name required." }));
-                            } else {
-                            this.setState(() => ({ nameError: null }));
-                            }
-                        }}
+                        onPress={setAppointment}
                         title='Marcar'
                         color="red"
                         style={globalStyles.getStartedButton}
