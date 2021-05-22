@@ -31,25 +31,19 @@ function CreateNewStoryScreen({navigator}) {
     }, []);
 
     const publishStory = async () => {
-        
-        console.log('Data: ');
-        console.log(id);
-        console.log(title);
-        console.log(article);
 
         let t = await getToken();
-        console.log(t);
         api.post('/api/stories', {
-            headers:{
-                'Authorization': `${t}`
-            },
             title,
             article,
             id
+        }, {
+            headers:{
+                'Authorization': `${t}`
+            }
         })
         .then(async (response) => {
             if (response.status == 200) {
-                console.log(response);
                 alert('Success!');
             }
         })

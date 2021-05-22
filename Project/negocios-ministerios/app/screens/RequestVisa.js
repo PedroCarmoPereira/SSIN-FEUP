@@ -44,23 +44,19 @@ function RequestVisa(props) {
     }, []);
     
     const requestVisa = async () => {
-        console.log('Data: ');
-        console.log(requester_id);
-        console.log(motive);
-        console.log(applied);
+
         let t = await getToken();
-        console.log(t);
-        api.post('/api/appointment', {
-            headers:{
-                'Authorization': `${t}`
-            },
+        api.post('/api/visas', {
             motive,
             applied,
             requester_id
+        }, {
+            headers:{
+                'Authorization': `${t}`
+            }
         })
         .then(async (response) => {
             if (response.status == 200) {
-                console.log(response);
                 alert('Success!');
             }
         })

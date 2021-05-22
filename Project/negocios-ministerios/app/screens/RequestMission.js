@@ -37,7 +37,6 @@ function RequestMission(props) {
         .then(async (response) => {
             if (response.status == 200) {
                 setUsers(response.data.data);
-                console.log(response.data.data);
             }
         })
         .catch(function (error) {
@@ -49,24 +48,20 @@ function RequestMission(props) {
     }, []);
     
     const setMission = async () => {
-        console.log('Data: ');
-        console.log(employee_id);
-        console.log(content);
-        console.log(op_date);
+
         let t = await getToken();
-        console.log(t);
-        api.post('/api/appointment', {
-            headers:{
-                'Authorization': `${t}`
-            },
+        api.post('/api/deliveries', {
             employee_id,
             content,
             op_date
+        }, {
+            headers:{
+                'Authorization': `${t}`
+            }
         })
         .then(async (response) => {
             if (response.status == 200) {
-                console.log(response);
-                alert('Success!');
+                alert('Mission scheduled!');
             }
         })
         .catch(function (error) {

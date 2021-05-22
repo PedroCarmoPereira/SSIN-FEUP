@@ -45,24 +45,20 @@ function RequestVisit(props) {
     }, []);
     
     const setAppointment = async () => {
-        console.log('Data: ');
-        console.log(requester_id);
-        console.log(motive);
-        console.log(set_date);
+
         let t = await getToken();
-        console.log(t);
         api.post('/api/appointment', {
-            headers:{
-                'Authorization': `${t}`
-            },
             requester_id,
             motive,
             set_date
+        }, {
+            headers:{
+                'Authorization': `${t}`
+            }
         })
         .then(async (response) => {
             if (response.status == 200) {
-                console.log(response);
-                alert('Success!');
+                alert('Visit scheduled!');
             }
         })
         .catch(function (error) {
