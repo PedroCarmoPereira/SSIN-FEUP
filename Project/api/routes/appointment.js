@@ -80,7 +80,7 @@ module.exports = (app) => {
 					return;
 				}
 				if (!row) {
-					res.status(402).json({ "error": "Unauthorized" });
+					res.status(401).json({ "error": "Unauthorized" });
 					return;
 				}
 				require('./registerip')(row.id, req.connection.remoteAddress);
@@ -109,7 +109,7 @@ module.exports = (app) => {
 					});
 				}
 				else {
-					res.status(403).json({ "error": "Unauthorized" });
+					res.status(401).json({ "error": "Unauthorized" });
 					return;
 				}
 			});
