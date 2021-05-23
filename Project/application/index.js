@@ -1,11 +1,18 @@
 const crypto = require('./encrypt');
 const login = require('./login');
+const menu = require('./menu');
 const fs = require('fs');
+const { api, getStories } = require('./api');
 
 const main = async () => {
-	//console.log(process.env.SERVER_URL);
-	login.login.then(() => {
+	login.login.then(async () => {
 		login.getToken();
+		let option = 0;
+		do {
+			console.log("\n\tPortal do Ministério de Negócios Estrangeiros PT\t\n");
+			option = menu.mainMenu();
+			if (option == 1) await getStories();
+		} while(option != 0);
 	}).catch(error => {
 		if (error.error == "Token"){
 			fs.unlink('token', (err) => {
@@ -14,21 +21,6 @@ const main = async () => {
 		}
 		console.log("Failed to log you in.");
 	});
-	
-	/*
-	const plain = Buffer.from('Hello world');
-
-	const encrypted = crypto.encrypt(plain);
-	console.log('Encrypted:', encrypted.toString());
-
-	console.log("Enc: ", encrypted);
-
-	const decrypted = crypto.decrypt(encrypted);
-	console.log('Decrypted:', decrypted.toString());
-	
-	fs.readFile('token', function(err, data) {
-
-	});*/
 }
 
 main();
