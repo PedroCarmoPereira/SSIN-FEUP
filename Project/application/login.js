@@ -29,6 +29,7 @@ const login = new Promise ((resolve, reject) => {
 		}
 		else {
 			token = crypto.decrypt(JSON.parse(data));
+			//Falta ver se o token é válido
 			console.log("Logging you in...");
 			resolve(token);
 		}
