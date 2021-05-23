@@ -30,7 +30,7 @@ const getStories = async () => {
 			if (response.status == 200)
 				printBeautifier(response.data.data);
 		}).catch((err) => {
-			if (err) console.log("Network Error.");
+			if (err) console.log(err.response.data.error);
 		});
 };
 

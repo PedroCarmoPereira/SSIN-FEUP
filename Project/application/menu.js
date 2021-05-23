@@ -33,9 +33,21 @@ const mainMenu = (access_lvl) => {
 		console.log("15. Approve visa");
 		console.log("16. Delete visa");
 	}
+	console.log("---------------------------");
+	if (access_lvl >= 1) {
+		console.log("17. Send message");
+	}
 	return prompt("\nSelect Option: ");
 }
 
+const chatMenu = (user_list) => {
+	console.log("Choose a user\n");
+	user_list.forEach(user => {
+		console.log(user.id + ". " + user.name);
+	});
+	return prompt("Select User: ");
+}
+
 module.exports = {
-	mainMenu
+	mainMenu, chatMenu
 }
