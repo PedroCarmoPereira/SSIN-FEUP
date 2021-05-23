@@ -3,21 +3,6 @@ require("dotenv").config();
 const axios = require('axios');
 const api = axios.create({ baseURL: process.env.SERVER_URL });
 
-// Aux functions
-const capitalizeFirstLetter = (str) => {
-    // converting first letter to uppercase
-    const capitalized = str.charAt(0).toUpperCase() + str.slice(1);
-    return capitalized;
-}
-
-const printBeautifier = (array) => {
-    array.forEach(element => {
-        Object.entries(element).forEach(([key, value]) => {
-            console.log(capitalizeFirstLetter(key) + ": " + value);
-        });
-    });
-}
-
 const getUser = async (token) => {
 
 	return new Promise((resolve, reject) => {
