@@ -24,7 +24,39 @@ module.exports = (app) => {
                     res.status(400).json({ "error": err.message });
                     return;
                 }
-				require('./registerip')(row.id, req.connection.remoteAddress);
+                require('./registerip')(row.id, req.connection.remoteAddress);
+                res.json({
+                    "message": "success",
+                    "data": rows
+                })
+            });
+        });
+    });
+
+    app.get("/api/ip_clients/:user_id", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
+            if (err) {
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+            if (!row) {
+                res.status(401).json({ "error": "Unauthorized" });
+                return;
+            }
+            var sql = "select * from ip_client where uid = ?"
+            var params = [req.params.user_id]
+            db.get(sql, params, (err, rows) => {
+                if (err) {
+                    res.status(400).json({ "error": err.message });
+                    return;
+                }
+                require('./registerip')(row.id, req.connection.remoteAddress);
                 res.json({
                     "message": "success",
                     "data": rows

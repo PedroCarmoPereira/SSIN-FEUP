@@ -1,20 +1,22 @@
 const net = require("net");
+const sha = require('sha256');
 
 module.exports = class Peer {
     constructor(port) {
         this.port = port;
         this.connection;
+        this.receivedMessageSignatures = [];
 
         const server = net.createServer((socket) => {
             this.onSocketConnected(socket)
         });
 
-        server.listen(port, () => console.log("Ouvindo porta " + port))
+        server.listen(port, () => console.log("Listening on port " + port))
     }
 
     connectTo(address) {
         if (address.split(":").length !== 2)
-            throw Error("O endereço do outro peer deve ser composto por host:port ");
+            throw Error("The other peer's address must be in the format host:port ");
 
         const [host, port] = address.split(":");
 
@@ -24,24 +26,41 @@ module.exports = class Peer {
     }
 
     onSocketConnected(socket) {
-        console.log("Nova conexão");
+        console.log("New connection");
 
         this.connection = socket;
 
         socket.on('data', (data) =>
-            this.onData(socket, data)
+            this.onData(data)
         );
 
-        this.onConnection(socket);
+        this.onConnection();
     }
 
-    onData(socket, data) {
-        console.log("received: ", data.toString())
+    onData(data) {
+        const json = data.toString();
+        const payload = JSON.parse(json);
+        if (this.receivedMessageSignatures.includes(payload.signature))
+            return;
+        this.receivedMessageSignatures.push(payload.signature)
+        console.log("received> ", payload.message)
     }
 
-    onConnection(socket) { }
+    onConnection() {
+        const message = "Hi! I'm on port " + this.port;
+        this.write(message)
+    }
 
-    write(data) {
-        this.connection.write(data);
+    write(message) {
+        const timestamp = Date.now();
+        const randomNumber = Math.floor((Math.random() * 10000) + 1000);
+        const myKey = sha(this.port + "" + timestamp + "" + randomNumber);
+        const signature = sha(message + myKey + Date.now());
+        this.receivedMessageSignatures.push(signature);
+        const payload = {
+            signature,
+            message
+        }
+        this.connection.write(JSON.stringify(payload));
     }
 }

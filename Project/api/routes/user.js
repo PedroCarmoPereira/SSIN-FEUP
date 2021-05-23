@@ -39,7 +39,7 @@ module.exports = (app) => {
                 res.status(400).json({ "error": err.message });
                 return;
             }
-            if (!row || row.access_lvl < 2) {
+            if (!row || row.access_lvl < 1) {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }

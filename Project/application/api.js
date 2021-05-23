@@ -41,6 +41,15 @@ const getUserIP = async (token, user_id) => {
 	});
 };
 
+const getStories = async () => {
+	await api.get('/api/stories')
+		.then(async (response) => {
+			if (response.status == 200) console.log(response.data.data);
+		}).catch((err) => {
+			if (err) console.log(err.response.data.error);
+		});
+};
+
 const getUsers = async (token) => {
 	return new Promise((resolve, reject) => {
 		api.get('/api/users', {
