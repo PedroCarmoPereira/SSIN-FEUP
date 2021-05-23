@@ -1,10 +1,15 @@
 require("dotenv").config();
 
 const axios = require('axios');
+axios.interceptors.request.use((config) => {
+	config.headers.cp = process.env.PORT;
+	config.headers.sp = process.env.SERVER_PORT;
+})
+axios.defaults.headers.common['cp'] = process.env.PORT;
+axios.defaults.headers.common['sp'] = process.env.SERVER_PORT;
 const api = axios.create({ baseURL: process.env.SERVER_URL });
 
-const getUser = async (token) => {
-
+const getOwnUser = async (token) => {
 	return new Promise((resolve, reject) => {
 		api.get('/api/user', {
 			headers: {
@@ -12,18 +17,46 @@ const getUser = async (token) => {
 			}
 		})
 			.then(async (response) => {
-				if (response.status == 200) {
-					resolve(response.data.data.id);
-				}
-			})
-			.catch(function (error) {
-				console.log(error.response.data);
-				reject({ error: "Get User" });
-			})
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				if (err) console.log(err.response.data.error);
+				reject({ error: "Own User" });
+			});
 	});
-}
+};
 
-// Stories
+const getUserIP = async (token, user_id) => {
+	return new Promise((resolve, reject) => {
+		api.get('/api/ip_clients/' + user_id, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				if (err) console.log(err.response.data.error);
+				reject({ error: "User IP" });
+			});
+	});
+};
+
+const getUsers = async (token) => {
+	return new Promise((resolve, reject) => {
+		api.get('/api/users', {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				if (err) console.log(err.response.data.error);
+				reject({ error: "Users" });
+			});
+	});
+};
+
 const getStories = async () => {
 	await api.get('/api/stories')
 		.then(async (response) => {
@@ -36,7 +69,8 @@ const getStories = async () => {
 
 const publishStory = async (token, title, article) => {
 
-	await getUser(token).then(async (id) => {
+	await getOwnUser(token).then(async (user) => {
+		let id = user.id;
 		await api.post('/api/stories', {
 			title,
 			article,
@@ -93,7 +127,8 @@ const getAppointments = async (token) => {
 
 const setAppointment = async (token, motive, set_date) => {
 
-	await getUser(token).then(async (requester_id) => {
+	await getOwnUser(token).then(async (user) => {
+		let requester_id = user.id;
 		await api.post('/api/appointment', {
 			requester_id,
 			motive,
@@ -264,7 +299,8 @@ const getVisa = async (token, visa_id) => {
 }
 const requestVisa = async (token, motive, applied) => {
 
-	await getUser(token).then(async (requester_id) => {
+	await getOwnUser(token).then(async (user) => {
+		let requester_id = user.id;
 		await api.post('/api/visas', {
 			motive,
 			applied,
@@ -334,10 +370,90 @@ const deleteVisa = async (token, visa_id) => {
 		});
 }
 
+const getMessages = async (token, id1, id2) => {
+	return new Promise((resolve, reject) => {
+		api.get('/api/messages/' + id1 + '/' + id2, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				if (err) console.log(err.response.data.error);
+				reject({ error: "Messages" });
+			});
+	});
+};
+
+const createMessage = async (token, id1, id2, text, date) => {
+	return new Promise((resolve, reject) => {
+		api.post('/api/messages/', {
+			sender_id: id1,
+			receiver_id: id2,
+			content: text,
+			sent_date: date
+		}, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				if (err) console.log(err.response.data.error);
+				reject({ error: "New message" });
+			});
+	});
+};
+
+const getCommKey = async (id1, id2, token) => {
+	return new Promise((resolve, reject) => {
+		api.get('/api/commkeys/' + id1 + '/' + id2, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				console.log(err);
+				if (err) resolve(undefined);
+			});
+	});
+};
+
+const genCommKey = async (id1, id2, token) => {
+	//Generate key
+	return new Promise((resolve, reject) => {
+		api.post('/api/commkeys/', {
+			uid1: id1,
+			uid2: id2,
+			ekey: "AAAAAA",
+		}, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) resolve(response.data.data);
+			}).catch((err) => {
+				if (err) resolve(undefined);
+			});
+	});
+};
+
 
 module.exports = {
 	api,
+	getOwnUser,
 	getStories,
+	getUsers,
+	getMessages,
+	createMessage,
+	getUserIP,
+	getCommKey,
+	genCommKey,
 	publishStory,
 	deleteStory,
 	getAppointments,

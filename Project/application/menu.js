@@ -45,6 +45,7 @@ const chatMenu = (user_list) => {
 	user_list.forEach(user => {
 		console.log(user.id + ". " + user.name);
 	});
+	console.log("\n");
 	return prompt("Select User: ");
 }
 
