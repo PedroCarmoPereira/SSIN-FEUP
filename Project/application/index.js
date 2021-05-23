@@ -5,7 +5,14 @@ const fs = require('fs');
 const main = async () => {
 	//console.log(process.env.SERVER_URL);
 	login.login.then(() => {
-		console.log(login.getToken());
+		login.getToken();
+	}).catch(error => {
+		if (error.error == "Token"){
+			fs.unlink('token', (err) => {
+				if (err) console.log(err);
+			});
+		}
+		console.log("Failed to log you in.");
 	});
 	
 	/*

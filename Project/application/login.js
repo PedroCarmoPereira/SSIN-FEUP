@@ -24,14 +24,22 @@ const login = new Promise ((resolve, reject) => {
 				})
 				.catch(function (error) {
 					console.log("An error has occurred: " + error.response.data.error);
-					reject("A");
+					reject({error: "Server"});
 				});
 		}
 		else {
 			token = crypto.decrypt(JSON.parse(data));
 			//Falta ver se o token é válido
 			console.log("Logging you in...");
-			resolve(token);
+			api.get('/api/token',{
+				headers:{
+				  'Authorization': `${token}`
+				}
+			  }).then(async (response) => {
+				if (response.status == 200) resolve(token)
+			  }).catch(function (error){
+				reject({error: "Token"});
+			  });
 		}
 
 		if (!flag){
