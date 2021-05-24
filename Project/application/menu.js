@@ -8,7 +8,7 @@ const mainMenu = () => {
 	console.log("2. Publish Story");
 	console.log("3. Delete Story");
 	console.log("---------------------------");
-	console.log("4. View Appointment");
+	console.log("4. View Appointments");
 	console.log("5. Set Appointment");
 	console.log("6. Delete Appointment");
 	console.log("---------------------------");
@@ -23,7 +23,7 @@ const mainMenu = () => {
 	console.log("14. Request visa");
 	console.log("15. Approve visa");
 	console.log("16. Delete visa");
-	return prompt("Select Option:");
+	return prompt("\nSelect Option: ");
 }
 
 module.exports = {

@@ -3,12 +3,12 @@ const login = require('./login');
 const menu = require('./menu');
 const fs = require('fs');
 const prompt = require('prompt-sync')();
-const { 
+const {
 	api,
 	getStories,
 	publishStory,
 	deleteStory,
-	getAppointment,
+	getAppointments,
 	setAppointment,
 	deleteAppointment,
 	getDeliveries,
@@ -30,8 +30,9 @@ const main = async () => {
 		do {
 			console.log("\n\tPortal do Ministério de Negócios Estrangeiros PT\t\n");
 			option = menu.mainMenu();
+			console.log("\n");
 			if (option == 1) await getStories();
-			else if (option == 2){
+			else if (option == 2) {
 				const title = prompt("\nStory Title: ");
 				const article = prompt("Story Article: ");
 				await publishStory(token, title, article);
@@ -41,11 +42,11 @@ const main = async () => {
 				await deleteStory(token, id);
 			}
 			else if (option == 4) {
-				await getAppointment(token);
+				await getAppointments(token);
 			}
 			else if (option == 5) {
-				const motive = prompt("\nAppoitment Motive: ");
-				const set_date = prompt("Appoitment Date: ");
+				const motive = prompt("\nAppointment Motive: ");
+				const set_date = prompt("Appointment Date: ");
 				await setAppointment(token, motive, set_date);
 			}
 			else if (option == 6) {
@@ -81,7 +82,11 @@ const main = async () => {
 			}
 			else if (option == 13) {
 				const visa_id = prompt("\nVisa ID: ");
-				await getVisa(token, visa_id);
+				await getVisa(token, visa_id)
+					.then(visa => console.log(visa))
+					.catch(function (error) {
+						console.log(error);
+					});
 			}
 			else if (option == 14) {
 				const motive = prompt("\nVisa Motive: ");
@@ -96,9 +101,10 @@ const main = async () => {
 				const visa_id = prompt("\nVisa ID: ");
 				await deleteVisa(token, visa_id);
 			}
-		} while(option != 0);
+			if (option != 0) prompt("\nPress ENTER to continue...");
+		} while (option != 0);
 	}).catch(error => {
-		if (error.error == "Token"){
+		if (error.error == "Token") {
 			fs.unlink('token', (err) => {
 				if (err) console.log(err);
 			});

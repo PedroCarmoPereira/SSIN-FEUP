@@ -1,23 +1,26 @@
 require("dotenv").config();
 
 const axios = require('axios');
-const api = axios.create({baseURL: process.env.SERVER_URL});
+const api = axios.create({ baseURL: process.env.SERVER_URL });
 
 // Aux functions
 const getUser = async (token) => {
-	
-	await api.get('/api/user', {
-		headers:{
-			'Authorization': `${token}`
-		}
-	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			return response.data.data.id;
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
+
+	return new Promise((resolve, reject) => {
+		api.get('/api/user', {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					resolve(response.data.data.id);
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+				reject({ error: "Get User" });
+			})
 	});
 }
 
@@ -33,134 +36,134 @@ const getStories = async () => {
 
 const publishStory = async (token, title, article) => {
 
-	const id = getUser(token);
-
-	await api.post('/api/stories', {
-		title,
-		article,
-		id
-	}, {
-		headers:{
-			'Authorization': `${token}`
-		}
-	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Success!\n');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
+	await getUser(token).then(async (id) => {
+		await api.post('/api/stories', {
+			title,
+			article,
+			id
+		}, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					console.log('Success!\n');
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+			})
 	});
 }
 
 const deleteStory = async (token, id) => {
 	await api.delete('/api/stories/' + id, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Story Deleted!\n');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log('Story Deleted!\n');
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 // Apointments
-const getAppointment = async (token) => {
+const getAppointments = async (token) => {
 
 	await api.get('/api/appointment', {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log(response.data.data);
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log(response.data.data);
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 const setAppointment = async (token, motive, set_date) => {
 
-	const requester_id = getUser(token);
-
-	await api.post('/api/appointment', {
-		requester_id,
-		motive,
-		set_date
-	}, {
-		headers:{
-			'Authorization': `${token}`
-		}
-	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Appointment scheduled!\n');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
+	await getUser(token).then(async (requester_id) => {
+		await api.post('/api/appointment', {
+			requester_id,
+			motive,
+			set_date
+		}, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					console.log('Appointment scheduled!\n');
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+			})
 	});
 }
 
 const deleteAppointment = async (token, appointment_id) => {
 
 	await api.delete('/api/appointment/' + appointment_id, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Appointment deleted!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log('Appointment deleted!');
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 // Deliveries
 const getDeliveries = async (token) => {
 
 	await api.get('/api/deliveries', {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log(response.data.data);
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log(response.data.data);
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 const getDelivery = async (token, delivery_id) => {
 
 	await api.get('/api/deliveries/' + delivery_id, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log(response.data.data);
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log(response.data.data);
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 const setDelivery = async (token, employee_id, content, op_date) => {
@@ -170,18 +173,18 @@ const setDelivery = async (token, employee_id, content, op_date) => {
 		content,
 		op_date
 	}, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Delivery scheduled!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log('Delivery scheduled!');
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 const changeDelivery = async (token, delivery_id, employee_id, content, op_date) => {
@@ -191,150 +194,153 @@ const changeDelivery = async (token, delivery_id, employee_id, content, op_date)
 		content,
 		op_date
 	}, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Delivery changed!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log('Delivery changed!');
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 const deleteDelivery = async (token, delivery_id) => {
 
 	await api.delete('/api/deliveries/' + delivery_id, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Delivery deleted!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log('Delivery deleted!');
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 // Visas
 const getVisas = async (token) => {
 
 	await api.get('/api/visas', {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log(response.data.data);
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log(response.data.data);
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 const getVisa = async (token, visa_id) => {
 
-	await api.get('/api/visas/' + visa_id, {
-		headers:{
-			'Authorization': `${token}`
-		}
-	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log(response.data.data);
-			return response.data.data;
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
+	return new Promise((resolve, reject) => {
+		api.get('/api/visas/' + visa_id, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					resolve(response.data.data);
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+				reject({ error: "Get Visa" });
+			})
 	});
 }
 const requestVisa = async (token, motive, applied) => {
 
-	const requester_id = getUser(token);
-
-	await api.post('/api/visas', {
-		motive,
-		applied,
-		requester_id
-	}, {
-		headers:{
-			'Authorization': `${token}`
-		}
-	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Visa requested!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
+	await getUser(token).then(async (requester_id) => {
+		await api.post('/api/visas', {
+			motive,
+			applied,
+			requester_id
+		}, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					console.log('Visa requested!');
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+			})
 	});
 }
 
 const approveVisa = async (token, visa_id) => {
 
-	const visa = getVisa(token, visa_id);
-	console.log(visa);
-	const motive = visa.motive;
-	const applied = visa.applied;
-	const requester_id = getUser(token);
-	console.log('olaaa: ');
-	console.log(requester_id);
-	const accepted = 1;
+	await getVisa(token, visa_id).then(async (visa) => {
+		const motive = visa.motive;
+		const applied = visa.applied;
+		const requester_id = visa.requester_id;
+		const accepted = 1;
 
-	await api.put('/api/visas/' + visa_id, {
-		motive,
-		applied,
-		requester_id,
-		accepted
-	}, {
-		headers:{
-			'Authorization': `${token}`
-		}
+		await api.put('/api/visas/' + visa_id, {
+			motive,
+			applied,
+			requester_id,
+			accepted
+		}, {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					console.log('Visa Approved!');
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+			})
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Visa Approved!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.catch(function (error) {
+			console.log(error);
+		});
 }
 
 const deleteVisa = async (token, visa_id) => {
 
 	await api.delete('/api/visas/' + visa_id, {
-		headers:{
+		headers: {
 			'Authorization': `${token}`
 		}
 	})
-	.then(async (response) => {
-		if (response.status == 200) {
-			console.log('Visa deleted!');
-		}
-	})
-	.catch(function (error) {
-		console.log(error);
-	});
+		.then(async (response) => {
+			if (response.status == 200) {
+				console.log('Visa deleted!');
+			}
+		})
+		.catch(function (error) {
+			console.log(error.response.data);
+		});
 }
 
 
-module.exports = { 
+module.exports = {
 	api,
 	getStories,
 	publishStory,
 	deleteStory,
-	getAppointment,
+	getAppointments,
 	setAppointment,
 	deleteAppointment,
 	getDeliveries,
