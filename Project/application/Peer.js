@@ -26,8 +26,6 @@ module.exports = class Peer {
     }
 
     onSocketConnected(socket) {
-        console.log("New connection");
-
         this.connection = socket;
 
         socket.on('data', (data) =>
@@ -42,13 +40,12 @@ module.exports = class Peer {
         const payload = JSON.parse(json);
         if (this.receivedMessageSignatures.includes(payload.signature))
             return;
-        this.receivedMessageSignatures.push(payload.signature)
-        console.log("received> ", payload.message)
+        this.receivedMessageSignatures.push(payload.signature);
+        console.log("\nThem: " + payload.message);
+        process.stdout.write("You: ");
     }
 
     onConnection() {
-        const message = "Hi! I'm on port " + this.port;
-        this.write(message)
     }
 
     write(message) {
