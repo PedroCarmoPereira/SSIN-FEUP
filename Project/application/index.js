@@ -23,13 +23,45 @@ const {
 	deleteVisa
 } = require('./api');
 
+const capitalizeFirstLetter = (str) => {
+    // converting first letter to uppercase
+    const capitalized = str.charAt(0).toUpperCase() + str.slice(1);
+    return capitalized;
+}
+
+const printBeautifier = (array) => {
+    Object.entries(array).forEach(([key, value]) => {
+		console.log(capitalizeFirstLetter(key) + ": " + value);
+	});
+}
+
+const getUserAccessLvl = async (token) => {
+	return new Promise((resolve, reject) => {
+		api.get('/api/user', {
+			headers: {
+				'Authorization': `${token}`
+			}
+		})
+			.then(async (response) => {
+				if (response.status == 200) {
+					resolve(response.data.data.access_lvl);
+				}
+			})
+			.catch(function (error) {
+				console.log(error.response.data);
+				reject({ error: "Get User" });
+			})
+	});
+}
+
 const main = async () => {
 	login.login.then(async () => {
 		const token = login.getToken();
 		let option = 0;
 		do {
 			console.log("\n\tPortal do Ministério de Negócios Estrangeiros PT\t\n");
-			option = menu.mainMenu();
+			const user_access_lvl = await getUserAccessLvl(token);
+			option = menu.mainMenu(user_access_lvl); 
 			console.log("\n");
 			if (option == 1) await getStories();
 			else if (option == 2) {
@@ -83,7 +115,7 @@ const main = async () => {
 			else if (option == 13) {
 				const visa_id = prompt("\nVisa ID: ");
 				await getVisa(token, visa_id)
-					.then(visa => console.log(visa))
+					.then(visa => printBeautifier(visa))
 					.catch(function (error) {
 						console.log(error);
 					});

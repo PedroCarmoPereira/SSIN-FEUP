@@ -4,6 +4,20 @@ const axios = require('axios');
 const api = axios.create({ baseURL: process.env.SERVER_URL });
 
 // Aux functions
+const capitalizeFirstLetter = (str) => {
+    // converting first letter to uppercase
+    const capitalized = str.charAt(0).toUpperCase() + str.slice(1);
+    return capitalized;
+}
+
+const printBeautifier = (array) => {
+    array.forEach(element => {
+        Object.entries(element).forEach(([key, value]) => {
+            console.log(capitalizeFirstLetter(key) + ": " + value);
+        });
+    });
+}
+
 const getUser = async (token) => {
 
 	return new Promise((resolve, reject) => {
@@ -28,7 +42,8 @@ const getUser = async (token) => {
 const getStories = async () => {
 	await api.get('/api/stories')
 		.then(async (response) => {
-			if (response.status == 200) console.log(response.data.data);
+			if (response.status == 200)
+				printBeautifier(response.data.data);
 		}).catch((err) => {
 			if (err) console.log("Network Error.");
 		});
@@ -48,7 +63,7 @@ const publishStory = async (token, title, article) => {
 		})
 			.then(async (response) => {
 				if (response.status == 200) {
-					console.log('Success!\n');
+					console.log('Story Published!\n');
 				}
 			})
 			.catch(function (error) {
@@ -83,7 +98,7 @@ const getAppointments = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				console.log(response.data.data);
+				printBeautifier(response.data.data);
 			}
 		})
 		.catch(function (error) {
@@ -141,7 +156,7 @@ const getDeliveries = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				console.log(response.data.data);
+				printBeautifier(response.data.data);
 			}
 		})
 		.catch(function (error) {
@@ -158,7 +173,7 @@ const getDelivery = async (token, delivery_id) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				console.log(response.data.data);
+				printBeautifier(response.data.data);
 			}
 		})
 		.catch(function (error) {
@@ -235,7 +250,7 @@ const getVisas = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				console.log(response.data.data);
+				printBeautifier(response.data.data);
 			}
 		})
 		.catch(function (error) {
