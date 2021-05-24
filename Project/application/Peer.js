@@ -8,6 +8,7 @@ module.exports = class Peer {
         this.connection;
         this.receivedMessageSignatures = [];
         this.key;
+        this.token;
 
         const server = net.createServer((socket) => {
             this.onSocketConnected(socket)
@@ -17,6 +18,9 @@ module.exports = class Peer {
         server.on('connection', () => server.close());          
     }
 
+    setToken(token){
+        this.token = token;
+    }
     setKey(key){
         this.key = key;
     }
@@ -60,7 +64,7 @@ module.exports = class Peer {
         const timestamp = Date.now();
         const randomNumber = Math.floor((Math.random() * 10000) + 1000);
         const myKey = sha(this.port + "" + timestamp + "" + randomNumber);
-        const signature = sha(message + myKey + Date.now());
+        const signature = sha(this.token);
         this.receivedMessageSignatures.push(signature);
         const payload = {
             signature,
