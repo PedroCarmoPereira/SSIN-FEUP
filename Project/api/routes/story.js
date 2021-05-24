@@ -1,7 +1,7 @@
 const db = require("../db/database.js");
 
 module.exports = (app) => {
-    app.get("/api/stories", (_, res, __) => {
+    app.get("/api/stories", (req, res, __) => {
         var sql = "select * from story"
         var params = []
         db.all(sql, params, (err, rows) => {
@@ -39,7 +39,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Invalid Credentials" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             if (row.access_lvl >= 1){
                 let insert = 'INSERT INTO story (title, article, author_id) VALUES (?,?,?)';
                 let stmt = db.prepare(insert);
@@ -81,7 +85,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Invalid Credentials" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             if (row.access_lvl >= 1){
             let del = 'DELETE FROM story WHERE story.id = ?';
             let stmt = db.prepare(del);

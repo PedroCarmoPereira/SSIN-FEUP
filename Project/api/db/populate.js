@@ -172,6 +172,8 @@ function populate() {
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		uid INTEGER NOT NULL,
 		addr TEXT,
+		clientPort TEXT,
+		serverPort TEXT,
 		FOREIGN KEY(uid) REFERENCES user(id)
 	  )`
 	);

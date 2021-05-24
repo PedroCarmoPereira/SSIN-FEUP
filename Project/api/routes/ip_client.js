@@ -24,7 +24,11 @@ module.exports = (app) => {
                     res.status(400).json({ "error": err.message });
                     return;
                 }
-                require('./registerip')(row.id, req.connection.remoteAddress);
+                let cp = "";
+			    let sp = "";
+			    if (req.header('cp') !== undefined) cp = req.header('cp');
+			    if (req.header('sp') !== undefined) sp = req.header('sp');
+                require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
                 res.json({
                     "message": "success",
                     "data": rows
@@ -56,7 +60,11 @@ module.exports = (app) => {
                     res.status(400).json({ "error": err.message });
                     return;
                 }
-                require('./registerip')(row.id, req.connection.remoteAddress);
+                let cp = "";
+			    let sp = "";
+			    if (req.header('cp') !== undefined) cp = req.header('cp');
+			    if (req.header('sp') !== undefined) sp = req.header('sp');
+                require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
                 res.json({
                     "message": "success",
                     "data": rows

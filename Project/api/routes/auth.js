@@ -42,9 +42,9 @@ module.exports = (app) => {
 						let stmt0 = db.prepare(insert0);
 						stmt0.run(token, username);
 
-						let insert1 = 'INSERT INTO ip_client (uid, addr) VALUES (?, ?)';
+						let insert1 = 'INSERT INTO ip_client (uid, addr, clientport, serverport) VALUES (?, ?, ?, ?)';
 						let stmt1 = db.prepare(insert1);
-						stmt1.run(user_id, req.connection.remoteAddress);
+						stmt1.run(user_id, req.connection.remoteAddress, req.header('cp'), req.header('sp'));
 						res.status(200).send({
 							message: 'Successfully Registered',
 							token: token

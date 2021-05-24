@@ -43,8 +43,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             var sql = "select * from user"
             var params = []
             db.all(sql, params, (err, rows) => {
