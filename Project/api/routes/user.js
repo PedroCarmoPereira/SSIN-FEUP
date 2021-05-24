@@ -74,4 +74,28 @@ module.exports = (app) => {
             });
         });
     });
+
+    app.get("/api/user", (req, res, __) => {
+        if (req.header('Authorization') === undefined) {
+            res.status(401).json({ "error": "Unauthorized" });
+            return;
+        }
+        var find_user = "SELECT * FROM user WHERE token = ?";
+
+        db.get(find_user, [req.header('Authorization')], (err, row) => {
+            if (err) {
+                res.status(400).json({ "error": err.message });
+                return;
+            }
+
+            if (!row){
+                res.status(404).json({ "error": "Invalid Token" });
+                return;
+            }
+            else {
+                res.status(200).json({ "message": "Retrived user", "data": row });
+                return;
+            }
+        })
+    });
 };
