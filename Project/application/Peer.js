@@ -1,17 +1,24 @@
 const net = require("net");
 const sha = require('sha256');
+//const { api } =  require('')
 
 module.exports = class Peer {
     constructor(port) {
         this.port = port;
         this.connection;
         this.receivedMessageSignatures = [];
+        this.key;
 
         const server = net.createServer((socket) => {
             this.onSocketConnected(socket)
         });
 
         server.listen(port, () => console.log("Listening on port " + port))
+        server.on('connection', () => server.close());          
+    }
+
+    setKey(key){
+        this.key = key;
     }
 
     connectTo(address) {
