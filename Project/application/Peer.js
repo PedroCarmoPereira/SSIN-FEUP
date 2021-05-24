@@ -1,6 +1,6 @@
 const net = require("net");
 const sha = require('sha256');
-//const { api } =  require('')
+const crypto =  require('./encrypt');
 
 module.exports = class Peer {
     constructor(port) {
@@ -48,7 +48,8 @@ module.exports = class Peer {
         if (this.receivedMessageSignatures.includes(payload.signature))
             return;
         this.receivedMessageSignatures.push(payload.signature);
-        console.log("\nThem: " + payload.message);
+        const msg = crypto.decryptECB(payload.message, this.key)
+        console.log("\nThem: " + msg);
         process.stdout.write("You: ");
     }
 

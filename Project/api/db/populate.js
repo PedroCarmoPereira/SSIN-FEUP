@@ -62,6 +62,12 @@ function populate() {
 		console.log('Error dropping ip_client');
 	}
 
+	try {
+		db.exec('DROP TABLE IF EXISTS comm_key');
+	} catch {
+		console.log('Error dropping comm_key');
+	}
+
 	db.run(`CREATE TABLE user (
 		id INTEGER PRIMARY KEY AUTOINCREMENT,
 		name text,
@@ -175,6 +181,16 @@ function populate() {
 		clientPort TEXT,
 		serverPort TEXT,
 		FOREIGN KEY(uid) REFERENCES user(id)
+	  )`
+	);
+
+	db.run(`CREATE TABLE comm_key(
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		uid1 INTEGER NOT NULL,
+		uid2 INTEGER NOT NULL,
+		ekey TEXT,
+		FOREIGN KEY(uid1) REFERENCES user(id)
+		FOREIGN KEY(uid2) REFERENCES user(id)
 	  )`
 	);
 }
