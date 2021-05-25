@@ -32,10 +32,11 @@ module.exports = class Peer {
     }
 
     connectTo(address) {
-        if (address.split(":").length !== 2)
+        let new_addr = address.substring(7);
+        if (new_addr.split(":").length !== 2)
             throw Error("The other peer's address must be in the format host:port ");
 
-        const [host, port] = address.split(":");
+        const [host, port] = new_addr.split(":");
 
         const socket = net.createConnection({ port, host }, () =>
             this.onSocketConnected(socket)
