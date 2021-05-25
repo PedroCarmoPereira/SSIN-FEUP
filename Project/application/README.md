@@ -1,2 +1,7 @@
-to run:
-PORT=3000 SERVER_PORT=6000 npm start
+To run:
+
+On the first terminal:
+> PORT=3000 SERVER_PORT=6000 npm start
+
+On a second terminal:
+> PORT=3001 SERVER_PORT=6001 npm start
