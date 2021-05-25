@@ -29,7 +29,6 @@ const {
 } = require('./api');
 const prompt = require('prompt-sync')();
 const Peer = require("./Peer");
-const { resolve } = require('path');
 
 const capitalizeFirstLetter = (str) => {
 	// converting first letter to uppercase
@@ -153,6 +152,7 @@ const main = async () => {
 							}
 						});
 					}
+					if (option != 0) prompt("\nPress ENTER to continue...");
 				} while (option != 0);
 				resolve(token);
 			});
@@ -169,80 +169,85 @@ const main = async () => {
 
 const privateChat = async (token) => {
 	return new Promise(async (resolve, reject) => {
-	if (!token) reject(undefined);
-	await getOwnUser(token).then(async (own_user) => {
-		await getUsers(token).then(async (user_list) => {
-			console.log("\n\tReal-time Chat\t\n");
-			let user_id = menu.chatMenu(user_list);
-			if (user_list.some(user => user.id == user_id)) {
-				let user_name = user_list.find(user => user.id == user_id).name;
-				console.log("\nChat with " + user_name + "\n");
-				peer.setPartner(user_id);
-				await getMessages(token, own_user.id, user_id).then(async (messages) => {
-					messages.forEach(msg => {
-						if (msg.sender_id == own_user.id)
-							console.log("You: " + msg.content);
-						else
-							console.log("Them: " + msg.content);
-					});
-					await getCommKey(own_user.id, user_id, token).then(async (key) => {
-						if (key !== undefined) {
-							peer.setKey(key);
-						}
-					})
-					await getUserIP(token, user_id).then(async (userIP) => {
-						if (userIP) {
-							try {
-								process.stdout.write("You: ");
-								peer.connectTo(userIP.addr + ":" + userIP.clientPort);
-								process.stdin.on('data', data => {
-									const message = data.toString().replace(/\n/g, "");
-									const cipher = crypto.encryptECB(message, peer.key);
-									peer.write(cipher);
-									process.stdout.write("You: ");
-								});
-							} catch (error) {
-								console.log(error);
+		if (!token) reject(undefined);
+		await getOwnUser(token).then(async (own_user) => {
+			if (own_user.access_lvl < 1) resolve(token);
+			await getUsers(token).then(async (user_list) => {
+				console.log("\n\tReal-time Chat\t\n");
+				let user_id = menu.chatMenu(user_list);
+				if (user_list.some(user => user.id == user_id)) {
+					let user_name = user_list.find(user => user.id == user_id).name;
+					console.log("\nChat with " + user_name + "\n");
+					peer.setPartner(user_id);
+					await getMessages(token, own_user.id, user_id).then(async (messages) => {
+						messages.forEach(msg => {
+							if (msg.sender_id == own_user.id)
+								console.log("You: " + msg.content);
+							else
+								console.log("Them: " + msg.content);
+						});
+						await getCommKey(own_user.id, user_id, token).then(async (key) => {
+							if (key !== undefined) {
+								peer.setKey(key);
 							}
-						}
-						else {
-							console.log("User is not online");
-						}
+						})
+						await getUserIP(token, user_id).then(async (userIP) => {
+							if (userIP) {
+								try {
+									process.stdout.write("You: ");
+									peer.connectTo(userIP.addr + ":" + userIP.clientPort);
+									process.stdin.on('data', data => {
+										const message = data.toString().replace(/\n/g, "");
+										const cipher = crypto.encryptECB(message, peer.key);
+										peer.write(cipher);
+										process.stdout.write("You: ");
+									});
+								} catch (error) {
+									console.log(error);
+								}
+							}
+							else {
+								console.log("User is not online");
+							}
+						});
 					});
-				});
-			}
-			else {
-				console.log("Invalid User!");
-				resolve(token);
-			}
+				}
+				else {
+					console.log("Invalid User!");
+					resolve(token);
+				}
+			})
+				.catch(error => console.log(error));
 		})
-			.catch(error => console.log(error));
-	})
 	});
 }
 
 const viewMessages = async (token) => {
 	await getOwnUser(token).then(async own_user => {
-		const id = prompt('Enter the user id whose messages you would like to read:')
+		const id = prompt('Enter the user id whose messages you would like to read: ');
 		await getCommKey(own_user.id, id, token).then(async (key) => {
 			if (key !== undefined) {
-				const data = fs.readFileSync('./messages/' + id + '.txt', 'UTF-8');
-	
-				// split the contents by new line
-				const lines = data.split(/\r?\n/);
-			
-				// print all lines
-				lines.forEach((line) => {
-					if (line !== "\n" && line != "" && line != "\r" && line){
-						const data = JSON.parse(line);
-						console.log(data.user + " sent: ");
-						const text = crypto.decryptECB(data.payload.message, key);
-						console.log(text);
-					}
-				});
+				try {
+					const data = fs.readFileSync('./messages/' + id + '.txt', 'UTF-8');
+
+					// split the contents by new line
+					const lines = data.split(/\r?\n/);
+
+					// print all lines
+					lines.forEach((line) => {
+						if (line !== "\n" && line != "" && line != "\r" && line) {
+							const data = JSON.parse(line);
+							const text = crypto.decryptECB(data.payload.message, key);
+							console.log("User ID" + data.user + " sent: " + text);
+						}
+					});
+				}
+				catch {
+					console.log("Unable to open file: Users haven't exchanged messages");
+				}
 			}
 		}).catch(err => console.log(err));
-	});	
+	});
 };
 
 main().then(async (token) => {

@@ -1,5 +1,4 @@
 const prompt = require('prompt-sync')();
-const fs = require('fs');
 
 const mainMenu = (access_lvl) => {
 	console.log("Options\n");
@@ -34,8 +33,8 @@ const mainMenu = (access_lvl) => {
 		console.log("15. Approve visa");
 		console.log("16. Delete visa");
 	}
-	console.log("---------------------------");
 	if (access_lvl >= 1) {
+		console.log("---------------------------");
 		console.log("17. Send message");
 	}
 	return prompt("\nSelect Option: ");

@@ -27,16 +27,18 @@ module.exports = class Peer {
         this.key = key;
     }
 
-    setPartner(partner){
+    setPartner(partner) {
         this.partner = partner;
     }
 
     connectTo(address) {
-        let new_addr = address.substring(7);
-        if (new_addr.split(":").length !== 2)
+        if (address.charAt(0) == ":")
+            address = address.substring(7);
+
+        if (address.split(":").length !== 2)
             throw Error("The other peer's address must be in the format host:port ");
 
-        const [host, port] = new_addr.split(":");
+        const [host, port] = address.split(":");
 
         const socket = net.createConnection({ port, host }, () =>
             this.onSocketConnected(socket)
@@ -61,7 +63,7 @@ module.exports = class Peer {
         const msg = crypto.decryptECB(payload.message, this.key)
         console.log("\nThem: " + msg);
         process.stdout.write("You: ");
-        const toFile = JSON.stringify({user:this.partner, payload}) + "\n";
+        const toFile = JSON.stringify({ user: this.partner, payload }) + "\n";
         fs.appendFile("./messages/" + this.partner + ".txt", toFile, (err) => {
             if (err) {
                 throw err;
