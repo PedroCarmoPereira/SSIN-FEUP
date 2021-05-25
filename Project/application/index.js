@@ -176,6 +176,7 @@ const privateChat = async (token) => {
 			if (user_list.some(user => user.id == user_id)) {
 				let user_name = user_list.find(user => user.id == user_id).name;
 				console.log("\nChat with " + user_name + "\n");
+				peer.setPartner(user_id);
 				await getMessages(token, own_user.id, user_id).then(async (messages) => {
 					messages.forEach(msg => {
 						if (msg.sender_id == own_user.id)

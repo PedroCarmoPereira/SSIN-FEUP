@@ -1,6 +1,7 @@
 const net = require("net");
 const sha = require('sha256');
 const crypto = require('./encrypt');
+const fs = require('fs');
 
 module.exports = class Peer {
     constructor(port) {
@@ -9,6 +10,7 @@ module.exports = class Peer {
         this.receivedMessageSignatures = [];
         this.key;
         this.token;
+        this.partner;
 
         const server = net.createServer((socket) => {
             this.onSocketConnected(socket)
@@ -23,6 +25,10 @@ module.exports = class Peer {
     }
     setKey(key) {
         this.key = key;
+    }
+
+    setPartner(partner){
+        this.partner = partner;
     }
 
     connectTo(address) {
@@ -54,6 +60,12 @@ module.exports = class Peer {
         const msg = crypto.decryptECB(payload.message, this.key)
         console.log("\nThem: " + msg);
         process.stdout.write("You: ");
+        const toFile = JSON.stringify({user:this.partner, payload}) + "\n";
+        fs.appendFile("./messages/" + this.partner + ".txt", toFile, (err) => {
+            if (err) {
+                throw err;
+            }
+        });
     }
 
     onConnection() {
