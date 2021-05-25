@@ -1,5 +1,11 @@
 require("dotenv").config();
 
+const https = require('https');
+
+const httpsAgent = new https.Agent({
+	rejectUnauthorized: false
+});
+
 const axios = require('axios');
 axios.interceptors.request.use((config) => {
 	config.headers.cp = process.env.PORT;
@@ -7,7 +13,7 @@ axios.interceptors.request.use((config) => {
 })
 axios.defaults.headers.common['cp'] = process.env.PORT;
 axios.defaults.headers.common['sp'] = process.env.SERVER_PORT;
-const api = axios.create({ baseURL: process.env.SERVER_URL });
+const api = axios.create({ baseURL: process.env.SERVER_URL, httpsAgent });
 
 const capitalizeFirstLetter = (str) => {
 	// converting first letter to uppercase
@@ -136,6 +142,7 @@ const getAppointments = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
+				console.log("\n APPOINTMENTS \n");
 				if (response.data.data.length == 0)
 					console.log("No entries found.\n");
 				response.data.data.forEach(elem => {
@@ -200,6 +207,7 @@ const getDeliveries = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
+				console.log("\n DELIVERIES \n");
 				if (response.data.data.length == 0)
 					console.log("No entries found.\n");
 				response.data.data.forEach(elem => {
@@ -299,6 +307,7 @@ const getVisas = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
+				console.log("\n VISA REQUESTS \n");
 				if (response.data.data.length == 0)
 					console.log("No entries found.\n");
 				response.data.data.forEach(elem => {
