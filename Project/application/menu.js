@@ -1,4 +1,5 @@
 const prompt = require('prompt-sync')();
+const fs = require('fs');
 
 const mainMenu = (access_lvl) => {
 	console.log("Options\n");
@@ -45,6 +46,7 @@ const chatMenu = (user_list) => {
 	user_list.forEach(user => {
 		console.log(user.id + ". " + user.name);
 	});
+	console.log("-1. Exit and see stored messages.");
 	console.log("\n");
 	return prompt("Select User: ");
 }

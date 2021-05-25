@@ -29,6 +29,7 @@ const {
 } = require('./api');
 const prompt = require('prompt-sync')();
 const Peer = require("./Peer");
+const { resolve } = require('path');
 
 const capitalizeFirstLetter = (str) => {
 	// converting first letter to uppercase
@@ -152,7 +153,6 @@ const main = async () => {
 							}
 						});
 					}
-					if (option != 0) prompt("\nPress ENTER to continue...");
 				} while (option != 0);
 				resolve(token);
 			});
@@ -168,7 +168,8 @@ const main = async () => {
 }
 
 const privateChat = async (token) => {
-	if (!token) return;
+	return new Promise(async (resolve, reject) => {
+	if (!token) reject(undefined);
 	await getOwnUser(token).then(async (own_user) => {
 		await getUsers(token).then(async (user_list) => {
 			console.log("\n\tReal-time Chat\t\n");
@@ -212,10 +213,40 @@ const privateChat = async (token) => {
 			}
 			else {
 				console.log("Invalid User!");
+				resolve(token);
 			}
 		})
 			.catch(error => console.log(error));
 	})
+	});
 }
 
-main().then(token => privateChat(token));
+const viewMessages = async (token) => {
+	await getOwnUser(token).then(async own_user => {
+		const id = prompt('Enter the user id whose messages you would like to read:')
+		await getCommKey(own_user.id, id, token).then(async (key) => {
+			if (key !== undefined) {
+				const data = fs.readFileSync('./messages/' + id + '.txt', 'UTF-8');
+	
+				// split the contents by new line
+				const lines = data.split(/\r?\n/);
+			
+				// print all lines
+				lines.forEach((line) => {
+					if (line !== "\n" && line != "" && line != "\r" && line){
+						const data = JSON.parse(line);
+						console.log(data.user + " sent: ");
+						const text = crypto.decryptECB(data.payload.message, key);
+						console.log(text);
+					}
+				});
+			}
+		}).catch(err => console.log(err));
+	});	
+};
+
+main().then(async (token) => {
+	await privateChat(token).then(async (token) => {
+		viewMessages(token)
+	});
+});
