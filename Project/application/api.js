@@ -9,6 +9,18 @@ axios.defaults.headers.common['cp'] = process.env.PORT;
 axios.defaults.headers.common['sp'] = process.env.SERVER_PORT;
 const api = axios.create({ baseURL: process.env.SERVER_URL });
 
+const capitalizeFirstLetter = (str) => {
+	// converting first letter to uppercase
+	const capitalized = str.charAt(0).toUpperCase() + str.slice(1);
+	return capitalized;
+}
+
+const printBeautifier = (array) => {
+	Object.entries(array).forEach(([key, value]) => {
+		console.log(capitalizeFirstLetter(key) + ": " + value);
+	});
+}
+
 const getOwnUser = async (token) => {
 	return new Promise((resolve, reject) => {
 		api.get('/api/user', {
@@ -39,15 +51,6 @@ const getUserIP = async (token, user_id) => {
 				reject({ error: "User IP" });
 			});
 	});
-};
-
-const getStories = async () => {
-	await api.get('/api/stories')
-		.then(async (response) => {
-			if (response.status == 200) console.log(response.data.data);
-		}).catch((err) => {
-			if (err) console.log(err.response.data.error);
-		});
 };
 
 const getUsers = async (token) => {

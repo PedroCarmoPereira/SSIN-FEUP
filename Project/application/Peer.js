@@ -1,6 +1,6 @@
 const net = require("net");
 const sha = require('sha256');
-const crypto =  require('./encrypt');
+const crypto = require('./encrypt');
 
 module.exports = class Peer {
     constructor(port) {
@@ -15,13 +15,13 @@ module.exports = class Peer {
         });
 
         server.listen(port, () => console.log("Listening on port " + port))
-        server.on('connection', () => server.close());          
+        server.on('connection', () => server.close());
     }
 
-    setToken(token){
+    setToken(token) {
         this.token = token;
     }
-    setKey(key){
+    setKey(key) {
         this.key = key;
     }
 
@@ -49,8 +49,7 @@ module.exports = class Peer {
     onData(data) {
         const json = data.toString();
         const payload = JSON.parse(json);
-        if (this.receivedMessageSignatures.includes(payload.signature))
-            return;
+
         this.receivedMessageSignatures.push(payload.signature);
         const msg = crypto.decryptECB(payload.message, this.key)
         console.log("\nThem: " + msg);
@@ -61,9 +60,6 @@ module.exports = class Peer {
     }
 
     write(message) {
-        const timestamp = Date.now();
-        const randomNumber = Math.floor((Math.random() * 10000) + 1000);
-        const myKey = sha(this.port + "" + timestamp + "" + randomNumber);
         const signature = sha(this.token);
         this.receivedMessageSignatures.push(signature);
         const payload = {
