@@ -8,7 +8,7 @@ module.exports = (app) => {
             res.status(401).json({ "error": "Unauthorized" });
             return;
         }
-
+		
 		var find_user = "SELECT * FROM user WHERE token = ?";
 
         db.get(find_user, [req.header('Authorization')], (err, row) => {
@@ -20,8 +20,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-
-			require('./registerip')(row.id, req.connection.remoteAddress);
+			let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+			require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
 
 			if (row.access_lvl == 0){
 				var sql = "SELECT * FROM appointment WHERE requester_id = ?";
@@ -83,7 +86,11 @@ module.exports = (app) => {
 					res.status(401).json({ "error": "Unauthorized" });
 					return;
 				}
-				require('./registerip')(row.id, req.connection.remoteAddress);
+				let cp = "";
+				let sp = "";
+				if (req.header('cp') !== undefined) cp = req.header('cp');
+				if (req.header('sp') !== undefined) sp = req.header('sp');
+				require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
 				if (row.access_lvl >= 1 || (parseInt(row.id) === parseInt(req.body.requester_id))){
 					const id = req.body.requester_id;
 					const mo = req.body.motive;
@@ -140,8 +147,11 @@ module.exports = (app) => {
 					res.status(401).json({ "error": "Unauthorized" });
 					return;
 				}
-				
-				require('./registerip')(row.id, req.connection.remoteAddress);
+				let cp = "";
+				let sp = "";
+				if (req.header('cp') !== undefined) cp = req.header('cp');
+				if (req.header('sp') !== undefined) sp = req.header('sp');
+				require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
 				if (row.access_lvl >= 1){
 					const id = req.params.id;
 					let del = 'DELETE FROM appointment WHERE id = ?';

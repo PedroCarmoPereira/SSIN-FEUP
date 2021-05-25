@@ -18,4 +18,5 @@ module.exports = (app) => {
     require('./visa_request.js')(app);
     require('./message.js')(app);
     require('./ip_client.js')(app);
+    require('./comm_keys.js')(app);
 };

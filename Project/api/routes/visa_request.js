@@ -18,7 +18,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             if (row.access_lvl >= 1) {
                 var select_all = "SELECT * FROM visa_request";
 
@@ -57,7 +61,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             var user = row;
             var select_one = "SELECT * FROM visa_request WHERE id = ?";
 
@@ -101,7 +109,7 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            require('./registerip')(row.id, req.connection.remoteAddress, "", "");
             var insert_visa = "INSERT INTO visa_request (motive, applied, requester_id) VALUES (?,?,?)";
             var params = [req.body.motive, req.body.applied, req.body.requester_id];
 
@@ -147,7 +155,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             if (row.access_lvl >= 2) {
                 var find_visa = "SELECT * FROM visa_request WHERE id = ?";
 
@@ -206,7 +218,11 @@ module.exports = (app) => {
                 res.status(401).json({ "error": "Unauthorized" });
                 return;
             }
-            require('./registerip')(row.id, req.connection.remoteAddress);
+            let cp = "";
+			let sp = "";
+			if (req.header('cp') !== undefined) cp = req.header('cp');
+			if (req.header('sp') !== undefined) sp = req.header('sp');
+            require('./registerip')(row.id, req.connection.remoteAddress, cp, sp);
             var user = row;
             var find_visa = "SELECT * FROM visa_request WHERE id = ?";
 
