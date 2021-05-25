@@ -125,12 +125,12 @@ function populate() {
 			}
 			let insert = 'INSERT INTO story (title, article, author_id) VALUES (?,?,?)';
 			let stmt = db.prepare(insert);
-			stmt.run('How it all began...', 'Some dude named Afonso decided Spain was shit...', 19);
+			stmt.run('How it all began...', 'Some dude named Afonso decided Spain was bad...', 19);
 			stmt.run('How it all developed...', 'They killed some A-rabs, then Spain killed some Tugas, then D. Jonh killed some Spaniards, badabim badabum, Discoveries or as the rest of the world calls it the start of the Transatatlantic Slave Trade...', 19);
-			stmt.run('The fall...', 'The 1st Manuel decided it was a good idea to spend all our stolen money on a fucking marble church', 20);
-			stmt.run('The DickTator', 'Salazar Slitherin wanted to purge all half-bloods and wizards of muggle blood or some shit...', 18);
+			stmt.run('The fall...', 'The 1st Manuel decided it was a good idea to spend all our stolen money on a marble church', 20);
+			stmt.run('The Dictator', 'Salazar Slitherin wanted to purge all half-bloods and wizards of muggle blood or something...', 18);
 			stmt.run('Where we at now', 'In debt but recovering, wait Corona-what?', 18);
-			stmt.run('Visit Portugal', 'We got beaches, we got bitches. We got all the Almeida\'s you could want. We also have a guy that videobombs reporters.', 20);
+			stmt.run('Visit Portugal', 'We got beaches, we got all the Almeida\'s you could want. We also have a guy that videobombs reporters.', 20);
 		});
 
 	db.run(`CREATE TABLE appointment (
