@@ -1,5 +1,11 @@
 require("dotenv").config();
 
+const https = require('https');
+
+const httpsAgent = new https.Agent({
+	rejectUnauthorized: false
+});
+
 const axios = require('axios');
 axios.interceptors.request.use((config) => {
 	config.headers.cp = process.env.PORT;
@@ -7,7 +13,7 @@ axios.interceptors.request.use((config) => {
 })
 axios.defaults.headers.common['cp'] = process.env.PORT;
 axios.defaults.headers.common['sp'] = process.env.SERVER_PORT;
-const api = axios.create({ baseURL: process.env.SERVER_URL });
+const api = axios.create({ baseURL: process.env.SERVER_URL, httpsAgent });
 
 const capitalizeFirstLetter = (str) => {
 	// converting first letter to uppercase
@@ -15,8 +21,8 @@ const capitalizeFirstLetter = (str) => {
 	return capitalized;
 }
 
-const printBeautifier = (array) => {
-	Object.entries(array).forEach(([key, value]) => {
+const printBeautifier = (obj) => {
+	Object.entries(obj).forEach(([key, value]) => {
 		console.log(capitalizeFirstLetter(key) + ": " + value);
 	});
 }
@@ -72,10 +78,17 @@ const getUsers = async (token) => {
 const getStories = async () => {
 	await api.get('/api/stories')
 		.then(async (response) => {
-			if (response.status == 200)
-				printBeautifier(response.data.data);
+			if (response.status == 200) {
+				console.log("\n STORIES \n");
+				if (response.data.data.length == 0)
+					console.log("No entries found.\n");
+				response.data.data.forEach(elem => {
+					printBeautifier(elem);
+					console.log("\n");
+				});
+			}
 		}).catch((err) => {
-			if (err) console.log(err.response.data.error);
+			if (err) console.log(err.response.data);
 		});
 };
 
@@ -129,7 +142,13 @@ const getAppointments = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				printBeautifier(response.data.data);
+				console.log("\n APPOINTMENTS \n");
+				if (response.data.data.length == 0)
+					console.log("No entries found.\n");
+				response.data.data.forEach(elem => {
+					printBeautifier(elem);
+					console.log("\n");
+				});
 			}
 		})
 		.catch(function (error) {
@@ -188,7 +207,13 @@ const getDeliveries = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				printBeautifier(response.data.data);
+				console.log("\n DELIVERIES \n");
+				if (response.data.data.length == 0)
+					console.log("No entries found.\n");
+				response.data.data.forEach(elem => {
+					printBeautifier(elem);
+					console.log("\n");
+				});
 			}
 		})
 		.catch(function (error) {
@@ -282,7 +307,13 @@ const getVisas = async (token) => {
 	})
 		.then(async (response) => {
 			if (response.status == 200) {
-				printBeautifier(response.data.data);
+				console.log("\n VISA REQUESTS \n");
+				if (response.data.data.length == 0)
+					console.log("No entries found.\n");
+				response.data.data.forEach(elem => {
+					printBeautifier(elem);
+					console.log("\n");
+				});
 			}
 		})
 		.catch(function (error) {
@@ -435,26 +466,6 @@ const getCommKey = async (id1, id2, token) => {
 	});
 };
 
-const genCommKey = async (id1, id2, token) => {
-	//Generate key
-	return new Promise((resolve, reject) => {
-		api.post('/api/commkeys/', {
-			uid1: id1,
-			uid2: id2,
-			ekey: "AAAAAA",
-		}, {
-			headers: {
-				'Authorization': `${token}`
-			}
-		})
-			.then(async (response) => {
-				if (response.status == 200) resolve(response.data.data);
-			}).catch((err) => {
-				if (err) resolve(undefined);
-			});
-	});
-};
-
 
 module.exports = {
 	api,
@@ -465,7 +476,6 @@ module.exports = {
 	createMessage,
 	getUserIP,
 	getCommKey,
-	genCommKey,
 	publishStory,
 	deleteStory,
 	getAppointments,
