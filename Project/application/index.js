@@ -36,8 +36,8 @@ const capitalizeFirstLetter = (str) => {
 	return capitalized;
 }
 
-const printBeautifier = (array) => {
-	Object.entries(array).forEach(([key, value]) => {
+const printBeautifier = (obj) => {
+	Object.entries(obj).forEach(([key, value]) => {
 		console.log(capitalizeFirstLetter(key) + ": " + value);
 	});
 }
