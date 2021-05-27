@@ -2,7 +2,7 @@ const prompt = require('prompt-sync')();
 
 const mainMenu = (access_lvl) => {
 	console.log("Options\n");
-	console.log("0. Exit App");
+	console.log("0. Exit App and enter Real-time Chat");
 	console.log("---------------------------");
 	console.log("1. View Stories");
 	if (access_lvl >= 1) {
