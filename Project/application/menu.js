@@ -11,31 +11,34 @@ const mainMenu = (access_lvl) => {
 	}
 	console.log("---------------------------");
 	if (access_lvl >= 1)
-		console.log("4. View Appointments");
+		console.log("4. View all Appointments");
+	else
+		console.log("4. View my Appointments");
 	console.log("5. Set Appointment");
-	if (access_lvl >= 1)
-		console.log("6. Delete Appointment");
-	if (access_lvl == 3) {
-		console.log("---------------------------");
-		console.log("7. View deliveries");
-		console.log("8. View delivery");
-		console.log("9. Set delivery");
-		console.log("10. Change delivery");
-		console.log("11. Delete delivery");
-	}
-	console.log("---------------------------");
-	if (access_lvl >= 2) {
-		console.log("12. View visas");
-		console.log("13. View visa");
-	}
-	console.log("14. Request visa");
-	if (access_lvl >= 2) {
-		console.log("15. Approve visa");
-		console.log("16. Delete visa");
-	}
+	console.log("6. Delete Appointment");
 	if (access_lvl >= 1) {
 		console.log("---------------------------");
-		console.log("17. Send message");
+		console.log("7. View all Deliveries");
+		console.log("8. View Delivery");
+		if (access_lvl == 3) {
+			console.log("9. Set Delivery");
+			console.log("10. Change Delivery");
+			console.log("11. Delete Delivery");
+		}
+	}
+	console.log("---------------------------");
+	if (access_lvl >= 1) {
+		console.log("12. View all Visas");
+		console.log("13. View Visa");
+	}
+	console.log("14. Request Visa");
+	if (access_lvl >= 2) {
+		console.log("15. Approve Visa");
+	}
+	console.log("16. Delete Visa");
+	if (access_lvl >= 1) {
+		console.log("---------------------------");
+		console.log("17. Send Message");
 	}
 	return prompt("\nSelect Option: ");
 }
