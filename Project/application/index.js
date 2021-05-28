@@ -224,6 +224,7 @@ const privateChat = async (token) => {
 
 const viewMessages = async (token) => {
 	await getOwnUser(token).then(async own_user => {
+		if (own_user.access_lvl < 1) return;
 		const id = prompt('Enter the user id whose messages you would like to read: ');
 		await getCommKey(own_user.id, id, token).then(async (key) => {
 			if (key !== undefined) {
